@@ -6,11 +6,17 @@ const addForm = document.querySelector('.add-form');
 const addOverlay = document.querySelector('.overlay');
 const wrapper = document.querySelector('.wrapper');
 const extraOptionsDiv = document.querySelector('.extra-options');
+const plusIcon = document.querySelector('.fa-plus-circle')
 
+let section='unread';
 const debug=true;
+
+const onLoad = () => {
+}
 
 //Plus icon clicked
 const showAddContainer = () => {
+    changeVisibility(plusIcon, 'hide');
     changeVisibility(listContainer, 'hide');
     animateCSS(addContainer, 'fadeIn', 'show')
 
@@ -20,11 +26,16 @@ const showAddContainer = () => {
 //List icon clicked
 const showListContainer = () => {
     animateCSS(listContainer,'fadeIn','show');
+    animateCSS(plusIcon, 'fadeIn', 'show')
     changeVisibility(addContainer, 'hide');
 }
 
 //Change section
 const changeSection = newSection => {
+
+    if (newSection!=null) {
+        section=newSection;
+    }
 
     //Make all menu sections inactive
     while (document.querySelector('.active')) {
@@ -32,27 +43,28 @@ const changeSection = newSection => {
     }
 
     //Make new menu section active
-    document.getElementById(newSection).classList.add('active');
+    document.getElementById(section).classList.add('active');
 
-    //Get filtered article list
-    getArticles(newSection);
+    getArticles();
+
 }
 
 //Open extra options
 const showExtraOptions = () => changeVisibility(extraOptionsDiv, 'toggle');
 
 //Article entered
+
 addForm.addEventListener('submit', e => {
+
+    log(this);
     e.preventDefault();
 
     let title = addForm.title.value;
     let url =  addForm.url.value;
     let tags = addForm.tags.value;
 
-    console.log(url);
-    console.log(tags);
-
     addtoFirebase(title,url,tags);
+    getArticles();
 })
 
 //Add new article to DB
@@ -82,52 +94,50 @@ const addtoFirebase = (title, url, tags) => {
 }
 
 //Get articles
-const getArticles = (type) => {
-    log("Get articles of type " + type)
+const getArticles = () => {
+    log("Get articles of type " + section)
 
     listOfArticles.innerHTML = `<ul class="list-group"`;
 
-    db.collection('articles')
-        .where('uid','==',UID)
-        .orderBy('created_at')
-        .onSnapshot(snapshot => {
-            snapshot.docChanges().forEach(change => {
-                
-                //let unread = change.doc.data().unread ? `<span class="badge badge-primary badge-pill">Unread</span>` : ``;
+    db.collection("articles").where("uid", "==", UID)
+    .get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
 
-                let unread=change.doc.data().unread;
-                let unreadClass = unread ? `unread` : ``;
+            let unread=doc.data().unread;
+            let unreadClass = unread ? `unread` : ``;
+            let title = doc.data().title.length>25 ? doc.data().title.substring(0, 25) + '...' : doc.data().title;
 
-                let title = change.doc.data().title;
-                let url = change.doc.data().url;
-                let docID = change.doc.id.toString()
+            let url = doc.data().url;
+            let docID = doc.id;
 
-                let render=true;
+            let render=true;
 
-                let html = `
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span class="article-title ${unreadClass}"><a href="${url}" target="_blank" onclick="readArticle('${docID}')">${title}</a></span>
-                <i class="far fa-edit edit" title="Edit"></i>
-                <i class="far fa-trash-alt delete" title="Delete"></i>
-                </li>
-                `;
-                
+            let html = `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span class="article-title ${unreadClass}"><a href="${url}" target="_blank" onclick="readArticle('${docID}')">${title}</a></span>
+            <i class="far fa-edit edit" title="Edit"></i>
+            <i class="far fa-trash-alt delete" title="Delete"></i>
+            </li>
+            `;
+            
 
-                if (type=='unread' && unread==false) {
-                    html="";
-                } else if (type=='tags') {
-                    html="";
-                }
+            if ((section=='unread' && !unread) || (section=='archive' && unread) || (section=='tags')) {
+                html="";
+            }
 
-                listOfArticles.innerHTML += html;
-
-            });
-
-            listOfArticles.innerHTML += `</ul>`;
-
+            listOfArticles.innerHTML += html;
+       
         });
 
+        listOfArticles.innerHTML += `</ul>`;
+    })
+    .catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
+
 };
+
 
 //Set article as read
 const readArticle = (docID) => {
@@ -141,7 +151,7 @@ const readArticle = (docID) => {
             return docRef.update({
                 unread: false
             }).then(function() {
-
+                getArticles();
             })
 
         }
@@ -149,3 +159,5 @@ const readArticle = (docID) => {
         console.log("Error getting document:", error);
     });
 }
+
+const shortenTitle = title => title.length()>=20 ?  title.substring(1, 20) + '...' : title;
