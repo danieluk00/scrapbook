@@ -33,8 +33,13 @@ body{
 }
 
 .nav-link{
-    padding-left:30px;
-    padding-right:30px;
+    padding: 0px 30px;
+}
+
+@media (max-width: 600px) {
+    .nav-link{
+        padding: 0px 20px;
+    }
 }
 
 .list-container{
