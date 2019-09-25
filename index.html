@@ -10,7 +10,7 @@
 
     <title>Scrapbook</title>
 </head>
-<body>
+<body onload="onLoad()">
 
     <div class="wrapper"></div>
 
@@ -21,11 +21,13 @@
 
         <div class="container">
 
+            <h1><i class="fas fa-plus-circle" alt="Add article" onclick="showAddContainer()"></i></h1>
+
                 <div class="list-container">
 
                         <header class="text-center text-dark my-4">
                             <h1 class="mb-4 font-weight-light text-center">Scrapbook</h1>
-
+                            
                             <ul class="nav nav-pills list-nav badge-light">
                                 <li class="nav-item">
                                     <a class="nav-link active" href="#" id="unread" onclick="changeSection('unread')">Unread</a>
@@ -34,21 +36,20 @@
                                     <a class="nav-link" href="#" id="archive" onclick="changeSection('archive')">Archive</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#" id="tags" onclick="changeSection('tags')">By Tag</a>
+                                    <a class="nav-link" href="#" id="tags" onclick="changeSection('tags')">By tag</a>
                                 </li>
                             </ul>
+                        </header>
 
                         <ul class="list-group">
                         </ul>
-
-                        <h1><i class="fas fa-plus" alt="Add article" onclick="showAddContainer()"></i></h1>
 
                 </div>
 
                 <div class="add-container d-none">
 
                         <div class="add-article card">
-                                <div class="card-body">
+                            <div class="card-body">
                                 <h5 class="card-title font-weight-light">Add article</h5>
                                 <form class="add-form" autocomplete="off">
                                 
@@ -67,16 +68,18 @@
                 
                                         <label for="tags">Tags</label>
                                         <input class="form-control font-weight-light" type="text" placeholder="News,Sport,Politics" name="tags"  autocomplete="off">
-                                        <small id="tagHelp" class="form-text text-muted input-padding">Add tags separated by commas to categorise your article</small>
+                                        <small id="tagHelp" class="form-text text-muted input-padding">Add tags separated by commas</small>
                                     </div>
 
-                                        <button type="submit" class="btn add-btn btn-primary">Add to scrapbook</button>
+                                    <button type="submit" name="submit" id="submit" class="btn add-btn btn-primary" onclick="">Add to scrapbook</button>
 
+                                    <span class="cancel-span">
+                                        <p><a href="#" onClick="showListContainer()">Cancel</a></p>
+                                    </span>
                                 </form>
                             </div>
                         </div>
 
-                        <h1><i class="fas fa-list-ul" onclick="showListContainer()"></i></h1>
                 
                 </div>
 

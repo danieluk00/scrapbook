@@ -23,27 +23,30 @@ body{
 /* List of articles */
 
 .list-nav{
+    display:flex;
+    justify-content: center;
     border-radius: 5px;
-    padding-left:5px;
-    padding-right:5px;
+}
+
+.list-group{
+    max-height:60%;
 }
 
 .nav-pills{
     margin-bottom:20px;
 }
 
-.nav-link{
-    padding: 0px 30px;
-}
-
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     .nav-link{
-        padding: 0px 20px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
 
+
 .list-container{
     max-width: 600px;
+    min-width: 300px;
 }
 
 .article-title{
@@ -70,16 +73,33 @@ body{
 }
 
 /* Plus/list icons */
+    .fa-plus-circle{
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin: 20px;
+        padding:10px;
+        opacity:0.9;
+        z-index:5;
+    }
+    .fas:hover{
+        transform: scale(1.4);
+        transition: transform .3s; /* Animation */
+    }  
 
-.fas{
-float:right;
-margin:10px 5px 0px 0px;
+@media (min-width: 800px) {
+    .fa-plus-circle{
+        bottom: 100;
+        right: 100;
+        transform: scale(1.8);
+    }
+    .fas:hover{
+        transform: scale(2.2);
+        transition: transform .3s; /* Animation */
+    }  
 }
 
-.fas:hover{
-transform: scale(1.4);
-transition: transform .3s; /* Animation */
-}
+    
 
 /* Add article */
 
@@ -97,7 +117,12 @@ input[type=text]:focus{
 }
 
 .card{
-margin-top:20px;
+    margin:10px;
+}
+
+.card-body{
+    display:flex;
+    flex-direction: column;
 }
 
 .add-article {
@@ -134,9 +159,13 @@ min-width:320px;
     flex-direction: column;
   }
 
-  .add-btn{
-      margin:0px 10px;
+  .btn{
+      margin:5px 10px;
   }
   
+  .cancel-span{
+      text-align: center;
+      margin-top:20px;
+  }
 
 /* List article */
