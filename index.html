@@ -1,0 +1,115 @@
+<html lang="en">
+<head name="Todo">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <title>Scrapbook</title>
+</head>
+<body>
+
+    <div class="wrapper"></div>
+
+        <nav class="navbar navbar-light justify-content-between">
+            <a class="navbar-brand">Scrapbook</a>
+            <button class="btn btn-light btn-sm username my-2 my-sm-0" type="submit">Log in</button>
+        </nav>
+
+        <div class="container">
+
+                <div class="list-container">
+
+                        <header class="text-center text-dark my-4">
+                            <h1 class="mb-4 font-weight-light text-center">Scrapbook</h1>
+
+                            <ul class="nav nav-pills list-nav badge-light">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" id="unread" onclick="changeSection('unread')">Unread</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="archive" onclick="changeSection('archive')">Archive</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" id="tags" onclick="changeSection('tags')">By Tag</a>
+                                </li>
+                            </ul>
+
+                        <ul class="list-group">
+                        </ul>
+
+                        <h1><i class="fas fa-plus" alt="Add article" onclick="showAddContainer()"></i></h1>
+
+                </div>
+
+                <div class="add-container d-none">
+
+                        <div class="add-article card">
+                                <div class="card-body">
+                                <h5 class="card-title font-weight-light">Add article</h5>
+                                <form class="add-form" autocomplete="off">
+                                
+                                    <label for="title">Title</label>
+                                    <input class="form-control font-weight-light input-padding enter-title" type="text" placeholder="Article title" name="title" autocomplete="off" required>
+
+                                    <label for="url">URL</label>
+                                    <input class="form-control font-weight-light input-padding" type="url" placeholder="URL" name="url" autocomplete="off" required>
+
+                                    <p class="expand-options-icon" onclick="showExtraOptions();">More options<i class="fas fa-chevron-circle-down fa-check" title="More options"></i></p>
+
+                                    <div class="extra-options d-none">
+                                        <label for="description">Description</label>
+                                        <input class="form-control font-weight-light" type="text" placeholder="Description" name="description" autocomplete="off">
+                                        <small id="tagHelp" class="form-text text-muted input-padding">Anything to help you search for this article later</small>
+                
+                                        <label for="tags">Tags</label>
+                                        <input class="form-control font-weight-light" type="text" placeholder="News,Sport,Politics" name="tags"  autocomplete="off">
+                                        <small id="tagHelp" class="form-text text-muted input-padding">Add tags separated by commas to categorise your article</small>
+                                    </div>
+
+                                        <button type="submit" class="btn add-btn btn-primary">Add to scrapbook</button>
+
+                                </form>
+                            </div>
+                        </div>
+
+                        <h1><i class="fas fa-list-ul" onclick="showListContainer()"></i></h1>
+                
+                </div>
+
+        </div>
+
+    </div>
+
+ <!-- The core Firebase JS SDK is always required and must be listed first -->
+ <script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-app.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-auth.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-firestore.js"></script>
+
+ <script>
+ var firebaseConfig = {
+     apiKey: "AIzaSyDpom2CBYSCw_RBo146mVKZxYEB5SbJgWE",
+     authDomain: "readinglistuk00.firebaseapp.com",
+     databaseURL: "https://readinglistuk00.firebaseio.com",
+     projectId: "readinglistuk00",
+     appId: "1:590081192969:web:4f4e6abff0bb25ecb974d8"
+ };
+ // Initialize Firebase
+ firebase.initializeApp(firebaseConfig);
+ const auth = firebase.auth();
+ const db = firebase.firestore();
+ </script>
+
+ <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" crossorigin="anonymous"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+ <script src="scripts/auth.js"></script>
+ <script src="scripts/app.js"></script>
+ <script src="scripts/myfunctions.js"></script>
+
+</body>
+</html>
