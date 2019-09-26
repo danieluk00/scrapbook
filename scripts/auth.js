@@ -15,8 +15,9 @@ auth.onAuthStateChanged(user => {
     userName = user.displayName;
     userNameBtn.textContent = userName;
     changeVisibility(loginContainer,'hide');
-    changeVisibility(userNameBtn,'show');
+    changeVisibility(listNav,'show');
     changeVisibility(listContainer,'show');
+    changeVisibility(userNameBtn,'show');
 
     loggedIn=true;
 
@@ -28,6 +29,7 @@ auth.onAuthStateChanged(user => {
     loggedIn = false;
 
     changeVisibility(loginContainer,'show');
+    changeVisibility(listNav,'hide');
     changeVisibility(listContainer,'hide');
     changeVisibility(addContainer,'hide');
     changeVisibility(userNameBtn,'hide');

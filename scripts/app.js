@@ -11,6 +11,7 @@ const extraOptionsDiv = document.querySelector('.extra-options');
 const search = document.querySelector('.search');
 const loginBtn = document.querySelector('.login-btn');
 const articleCountText = document.querySelector('.article-Count');
+const listNav = document.querySelector('.list-nav');
 
 
 let section='unread', articleArray=[], tagArray=[], tagCountArray=[], searchTerm, justAdded, tagFilter, addMode, editDocID;
