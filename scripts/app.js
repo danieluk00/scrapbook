@@ -2,37 +2,42 @@ const addContainer = document.querySelector('.add-container');
 const listContainer = document.querySelector('.list-container');
 const loginContainer = document.querySelector('.login-container');
 const listOfArticles = document.querySelector('.list-group');
+const tagGroup = document.querySelector('.tag-group');
 const addCard = document.querySelector('.add-article');
 const addForm = document.querySelector('.add-form');
 const addOverlay = document.querySelector('.overlay');
 const wrapper = document.querySelector('.wrapper');
 const extraOptionsDiv = document.querySelector('.extra-options');
-const plusIcon = document.querySelector('.fa-plus-circle');
 const search = document.querySelector('.search');
 const loginBtn = document.querySelector('.login-btn');
+const articleCountText = document.querySelector('.article-Count');
 
-let section='unread', articleArray=[];
+
+let section='unread', articleArray=[], tagArray=[], tagCountArray=[], searchTerm, justAdded, tagFilter, addMode, editDocID;
 const debug=true;
 
 const onLoad = () => {
     log('loaded');
 }
 
-//Plus icon clicked
+//New article clicked
 const showAddContainer = () => {
-    changeVisibility(plusIcon, 'hide');
+    changeVisibility(addContainer, 'show');
     changeVisibility(listContainer, 'hide');
-    animateCSS(addContainer, 'fadeIn', 'show')
+    document.querySelector('.extra-options').classList.add('d-none');
+    addMode='add';
+
+    document.querySelector('.card-title').textContent="Add new article";
+    document.querySelector('.add-article-btn').innerHTML="Add to scrapbook";
+
+    addForm.title.value = "";
+    addForm.url.value = "";
+    addForm.tags.value = "";
+    addForm.description.value ="";
 
     document.querySelector('.enter-title').focus();
 }
 
-//List icon clicked
-const showListContainer = () => {
-    animateCSS(listContainer,'fadeIn','show');
-    animateCSS(plusIcon, 'fadeIn', 'show')
-    changeVisibility(addContainer, 'hide');
-}
 
 //Change section
 const changeSection = newSection => {
@@ -49,7 +54,13 @@ const changeSection = newSection => {
     //Make new menu section active
     document.getElementById(section).classList.add('active');
 
-    renderList();
+    if (section=='add') {
+        showAddContainer()
+    } else {
+        changeVisibility(addContainer, 'hide');
+        changeVisibility(listContainer, 'show');
+        section=='tags' ? renderTags() : renderList();
+    }
 
 }
 
@@ -63,15 +74,15 @@ addForm.addEventListener('submit', e => {
     e.preventDefault();
 
     let title = addForm.title.value;
-    let url =  addForm.url.value;
+    let url = addForm.url.value;
     let tags = addForm.tags.value;
+    let description = addForm.description.value;
 
-    addtoFirebase(title,url,tags);
-    getArticles();
+    addtoFirebase(title,url,tags,description);
 })
 
 //Add new article to DB
-const addtoFirebase = (title, url, tags) => {
+const addtoFirebase = (title, url, tags, description) => {
 
     const now = new Date();
 
@@ -79,20 +90,23 @@ const addtoFirebase = (title, url, tags) => {
         title,
         url,
         tags,
+        description,
         uid: UID,
         unread: true,
         created_at:firebase.firestore.Timestamp.fromDate(now)
     }
-
-    db.collection("articles").add(object).then(() => {
-
-        animateCSS(addContainer, 'zoomOut', 'hide')
-
-        setTimeout(() => {
-            showListContainer();
-        },1000);
-
-    })
+    
+    if (addMode=='add') {
+        db.collection("articles").add(object).then(() => {
+            getArticles();
+            changeSection('unread');
+        })
+    } else {
+        db.collection("articles").doc(editDocID).set(object).then(() => {
+            getArticles();
+            changeSection('unread');
+        })
+    }
 
 }
 
@@ -101,12 +115,14 @@ const getArticles = () => {
     log("Get articles of type " + section)
 
     articleArray=[];
+    tagArray=[];
 
     db.collection("articles").where("uid", "==", UID)
     .get()
     .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
 
+            addToTagArray(doc);
             articleArray.push(doc);
        
         });
@@ -122,7 +138,12 @@ const getArticles = () => {
 
 const renderList = () => {
 
+    let visibleCount=0, totalCount=0;
+
     console.log('Render list');
+    
+    changeVisibility(listOfArticles,'show');
+    changeVisibility(tagGroup,'hide');
 
     listOfArticles.innerHTML = `<ul class="list-group"`;
 
@@ -130,28 +151,89 @@ const renderList = () => {
 
         let unread=article.data().unread;
         let unreadClass = unread ? `unread` : ``;
-        let title = article.data().title.length>25 ? article.data().title.substring(0, 25) + '...' : article.data().title;
-    
+        //let title = article.data().title.length>25 ? article.data().title.substring(0, 25) + '...' : article.data().title;
+        let title = article.data().title;
+
         let url = article.data().url;
+        let description = article.data().description;
+        let tags = article.data().tags;
         let docID = article.id;
-    
-        let render=true;
+
+        let searchTerm = search.search.value.trim().toLowerCase();
+        changeVisibility(search,'show');
+
     
         let html = `
         <li class="list-group-item d-flex justify-content-between align-items-center">
         <span class="article-title ${unreadClass}"><a href="${url}" target="_blank" onclick="readArticle('${docID}')">${title}</a></span>
-        <i class="far fa-edit edit" title="Edit"></i>
-        <i class="far fa-trash-alt delete" title="Delete"></i>
+        <span class="icons">
+            <i class="far fa-edit edit" title="Edit" onclick="editArticle('${docID}','${title}','${url}','${description}','${tags}','${title}')"></i>
+            <i class="far fa-trash-alt delete" title="Delete" onclick="deleteArticle('${docID}', '${title}',parentElement)"></i>
+        </span>
         </li>
         `;
-        
     
-        if ((section=='unread' && !unread) || (section=='archive' && unread) || (section=='tags')) {
+        if ((section=='unread' && unread) || (section=='archive' && !unread) || (section=='tags' && tags.toLowerCase().includes(tagFilter)))  {
+            totalCount++;
+        }
+
+        //Filter out articles from other sections
+        if ((section=='unread' && !unread) || (section=='archive' && unread))  {
             html="";
         }
-    
+        
+        //Filter out articles if search text entered
+        if (searchTerm!="" && (!title.toLowerCase().includes(searchTerm) && !description.toLowerCase().includes(searchTerm) && !tags.toLowerCase().includes(searchTerm))) {
+            html="";
+        }
+
+        if (section=='tags' && !tags.toLowerCase().includes(tagFilter)) {
+            html=""
+        }
+
+        if (html!="") {
+            visibleCount++;
+        }
+
+        removeAnimations();
+
         listOfArticles.innerHTML += html;
     
+    })
+
+
+    if (section=="unread") {
+        articleCountText.innerHTML = `Showing ${visibleCount} of ${totalCount} <strong>unread</strong> articles`;
+    } else if  (section=="archive") {
+        articleCountText.innerHTML = `Showing ${visibleCount} of ${totalCount} <strong>archived</strong> articles`;
+    } else if  (section=="tags") {
+        articleCountText.innerHTML = `Showing ${visibleCount} of ${totalCount} articles tagged <strong>'${tagFilter}'</strong>`;     
+    }
+
+}
+
+const renderTags = () => {
+
+    console.log('Render list');
+
+    changeVisibility(listOfArticles,'hide');
+    changeVisibility(tagGroup,'show');
+
+    tagGroup.innerHTML = ``;
+
+    changeVisibility(search,'hide');
+
+    tagArray.forEach(tag => {
+
+        let html = `
+        <button type="button" class="btn btn-dark" onclick="showTag('${tag}')">
+        ${tag}
+        </button>
+        `;
+
+        tagGroup.innerHTML += html;
+
+        //<span class="badge badge-light">4</span>
 
     })
 
@@ -184,20 +266,89 @@ const shortenTitle = title => title.length()>=20 ?  title.substring(1, 20) + '..
 
 //Listen for search term change
 search.addEventListener('keyup', () => {
-    const searchTerm = search.value.trim();
-    filterList(searchTerm);
+     renderList();
 });
 
 //Filter todo list by search term
 const filterList = (searchTerm) => {
 
     //Iterate array and add or remove 'filter-out' class
-    Array.from(list.children)
-        .filter(todo => !todo.textContent.includes(searchTerm))
-        .forEach((todo) => todo.classList.add('filter-out'))
+    Array.from(articleArray)
+        .filter(article => !article.textContent.includes(searchTerm))
+        .forEach((article) => article.classList.add('filter-out'))
 
-    Array.from(list.children)
-    .filter(todo => todo.textContent.includes(searchTerm))
-    .forEach((todo) => todo.classList.remove('filter-out'))
+    Array.from(articleArray)
+    .filter(article => todarticleo.textContent.includes(searchTerm))
+    .forEach((article) => article.classList.remove('filter-out'))
     
+}
+
+const deleteArticle = (docID, title,parentElement) => {
+    if (confirm(`Are you sure you want to delete '${title}'?`)) {
+
+        animateCSS(parentElement,'fadeOutLeft','hide');
+        setTimeout(() => {
+            db.collection("articles").doc(docID).delete().then(function() {
+                getArticles();
+            }).catch(function(error) {
+                console.error("Error removing document: ", error);
+            });
+        }, 500);
+    }
+}
+
+const removeAnimations = () => {
+
+    if (document.querySelector('.animated')) {
+        document.querySelector('.animated').classList.remove('animated');
+    }
+    if (document.querySelector('.rubberBand')) {
+        document.querySelector('.rubberBand').classList.remove('rubberBand');
+    }
+
+}
+
+const addToTagArray = doc => {
+
+    let tag = doc.data().tags.toLowerCase().split(',');
+    tag.forEach(tag => {
+
+        if (tag!="" && tagArray.includes(tag)==false) {
+            tagArray.push(tag)
+        }
+
+    //countTags();
+
+    })
+
+    tagArray.sort();
+
+    log(tagArray);
+}
+
+const showTag = tag => {
+
+    log('Show tag: '+tag)
+    tagFilter = tag;
+    renderList();
+}
+
+const editArticle = (docID,title,url,description,tags) => {
+
+    changeVisibility(addContainer, 'show');
+    changeVisibility(listContainer, 'hide');
+    document.querySelector('.extra-options').classList.add('d-none');
+    addMode='edit';
+
+    document.querySelector('.card-title').textContent="Edit article";
+    document.querySelector('.add-article-btn').innerHTML="Save changes";
+
+    addForm.title.value = title;
+    addForm.url.value = url;
+    addForm.tags.value = tags;
+    addForm.description.value =description;
+
+    editDocID = docID;
+
+    document.querySelector('.enter-title').focus();
 }

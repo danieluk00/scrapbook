@@ -17,7 +17,6 @@ auth.onAuthStateChanged(user => {
     changeVisibility(loginContainer,'hide');
     changeVisibility(userNameBtn,'show');
     changeVisibility(listContainer,'show');
-    changeVisibility(plusIcon,'show');
 
     loggedIn=true;
 
@@ -31,7 +30,6 @@ auth.onAuthStateChanged(user => {
     changeVisibility(loginContainer,'show');
     changeVisibility(listContainer,'hide');
     changeVisibility(addContainer,'hide');
-    changeVisibility(plusIcon,'hide');
     changeVisibility(userNameBtn,'hide');
 
   }
