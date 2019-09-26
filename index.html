@@ -21,6 +21,24 @@
 
         <h1 class="mb-4 font-weight-light text-center title">Scrapbook</h1>
 
+        <header class="text-center text-dark my-4">
+                            
+            <ul class="nav nav-pills list-nav ">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" id="unread" onclick="changeSection('unread')">Unread</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="archive" onclick="changeSection('archive')">Archive</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="tags" onclick="changeSection('tags')">Tags</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link add-nav-link" href="#" id="add" onclick="changeSection('add')">Add+</a>
+                </li>
+            </ul>
+        </header>
+
         <div class="container">
 
         <div class="login-container d-none">
@@ -31,35 +49,21 @@
             <p class="login-error"></p>
         </div>
 
-            <h1><i class="fas fa-plus-circle" alt="Add article" onclick="showAddContainer()"></i></h1>
-
                 <div class="list-container">
-
-                        <header class="text-center text-dark my-4">
-                            
-                            <ul class="nav nav-pills list-nav badge-light">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="#" id="unread" onclick="changeSection('unread')">Unread</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#" id="archive" onclick="changeSection('archive')">Archive</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#" id="tags" onclick="changeSection('tags')">By tag</a>
-                                </li>
-                            </ul>
-                        </header>
 
                         <div class="search-filter">
                             <h5 class="my-title mb-2 font-weight-light"></h5>
                             <form class="search" autocomplete="off">
                                 <input class="form-control m-auto searchbox rounded-pill" type="text" name="search" placeholder="Filter my articles..." />
-                                <i class="far fa-search-alt"></i>
+                                <p class="article-count text-muted"></p>
                             </form>
                         </div>
 
                         <ul class="list-group">
                         </ul>
+
+                        <div class="tag-group">
+                        </div>
 
                 </div>
 
@@ -76,27 +80,23 @@
                                     <label for="url">URL</label>
                                     <input class="form-control font-weight-light input-padding" type="url" placeholder="URL" name="url" autocomplete="off" required>
 
-                                    <p class="expand-options-icon" onclick="showExtraOptions();">More options<i class="fas fa-chevron-circle-down fa-check" title="More options"></i></p>
+                                    <p class="expand-options-icon" onclick="showExtraOptions();">More options<i class="fas fa-chevron-circle-down fa-check" style="margin-left:10px" title="More options"></i></p>
 
                                     <div class="extra-options d-none">
                                         <label for="description">Description</label>
                                         <input class="form-control font-weight-light" type="text" placeholder="Description" name="description" autocomplete="off">
-                                        <small id="tagHelp" class="form-text text-muted input-padding">Anything to help you search for this article later</small>
+                                        <small id="tagHelp" class="form-text text-muted input-padding">Anything to help you find this article later</small>
                 
                                         <label for="tags">Tags</label>
-                                        <input class="form-control font-weight-light" type="text" placeholder="News,Sport,Politics" name="tags"  autocomplete="off">
+                                        <input class="form-control font-weight-light" type="text" placeholder="news,sport,politics" name="tags"  autocomplete="off">
                                         <small id="tagHelp" class="form-text text-muted input-padding">Add tags separated by commas</small>
                                     </div>
 
-                                    <button type="submit" name="submit" id="submit" class="btn add-btn btn-primary" onclick="">Add to scrapbook</button>
+                                    <button type="submit" name="submit" id="submit" class="btn add-article-btn btn-primary" onclick="">Add to scrapbook</button>
 
-                                    <span class="cancel-span">
-                                        <p><a href="#" onClick="showListContainer()">Cancel</a></p>
-                                    </span>
                                 </form>
                             </div>
                         </div>
-
                 
                 </div>
 

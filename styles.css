@@ -5,24 +5,29 @@ body{
     background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,81,117,0.7063200280112045) 100%);
   }
 
+.wrapper{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
 .container{
     display:flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     justify-self: center;
-    max-width:600px;
 }
 
 .navbar{
     background-color: #660029;
     color:white;
-    width:100%;
 }
 
 .title{
-    padding-top:20px;
-    margin-top:20px;
+    padding-top:10px;
+    margin-top:10px;
 }
 
 /* Login container */
@@ -42,25 +47,44 @@ body{
     border-radius: 5px;
 }
 
-.list-group{
-    max-height:60%;
-}
-
 .nav-pills{
     margin-bottom:20px;
 }
 
-@media (max-width: 800px) {
-    .nav-link{
-        padding-left: 10px;
-        padding-right: 10px;
-    }
+
+.list-group{
+    min-width:650px;
+    margin-left:10px;
+    margin-right:10px;
+    max-height:60%;
+}
+.card-body{
+    min-width:650px
 }
 
-
-.list-container{
-    max-width: 600px;
-    min-width: 300px;
+@media  (min-width: 600px) and (max-width: 749px) {
+    .list-group{
+        min-width:500px
+    }
+    .card-body{
+        min-width:500px
+    }
+}
+@media  (min-width: 450px) and (max-width: 599px) {
+    .list-group{
+        min-width:400px
+    }
+    .card-body{
+        min-width:400px
+    }
+}
+@media  (max-width: 449px) {
+    .list-group{
+        min-width:300px
+    }
+    .card-body{
+        min-width:300px
+    }
 }
 
 .article-title{
@@ -83,37 +107,8 @@ body{
 .icons{
     display:flex;
     flex-direction: row;
-
 }
 
-/* Plus/list icons */
-    .fa-plus-circle{
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        margin: 20px;
-        padding:10px;
-        opacity:0.9;
-        z-index:5;
-    }
-    .fas:hover{
-        transform: scale(1.4);
-        transition: transform .3s; /* Animation */
-    }  
-
-@media (min-width: 800px) {
-    .fa-plus-circle{
-        bottom: 100;
-        right: 100;
-        transform: scale(1.8);
-    }
-    .fas:hover{
-        transform: scale(2.2);
-        transition: transform .3s; /* Animation */
-    }  
-}
-
-    
 
 /* Add article */
 
@@ -140,7 +135,6 @@ input[type=text]:focus{
 display:flex;
 align-self:center;
 margin:10px;
-min-width:320px;
 }
 
 .input-padding{
@@ -180,3 +174,29 @@ min-width:320px;
   }
 
 /* List article */
+
+.tag{
+    background: #D8D8D5;
+}
+
+.article-count{
+    margin-top:5px;
+    text-align:center;
+}
+
+.searchbox{
+    text-align:center;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.tag-group{
+   display:flex;
+   flex-direction: row;
+   justify-content: center;
+   flex-wrap: wrap;
+}
+
+.far{
+    padding-left:15px;
+}
