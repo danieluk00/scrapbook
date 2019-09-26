@@ -1,17 +1,21 @@
 const addContainer = document.querySelector('.add-container');
 const listContainer = document.querySelector('.list-container');
+const loginContainer = document.querySelector('.login-container');
 const listOfArticles = document.querySelector('.list-group');
 const addCard = document.querySelector('.add-article');
 const addForm = document.querySelector('.add-form');
 const addOverlay = document.querySelector('.overlay');
 const wrapper = document.querySelector('.wrapper');
 const extraOptionsDiv = document.querySelector('.extra-options');
-const plusIcon = document.querySelector('.fa-plus-circle')
+const plusIcon = document.querySelector('.fa-plus-circle');
+const search = document.querySelector('.search');
+const loginBtn = document.querySelector('.login-btn');
 
-let section='unread';
+let section='unread', articleArray=[];
 const debug=true;
 
 const onLoad = () => {
+    log('loaded');
 }
 
 //Plus icon clicked
@@ -45,7 +49,7 @@ const changeSection = newSection => {
     //Make new menu section active
     document.getElementById(section).classList.add('active');
 
-    getArticles();
+    renderList();
 
 }
 
@@ -56,7 +60,6 @@ const showExtraOptions = () => changeVisibility(extraOptionsDiv, 'toggle');
 
 addForm.addEventListener('submit', e => {
 
-    log(this);
     e.preventDefault();
 
     let title = addForm.title.value;
@@ -83,11 +86,11 @@ const addtoFirebase = (title, url, tags) => {
 
     db.collection("articles").add(object).then(() => {
 
-        animateCSS(addContainer, 'zoomOutDown', 'hide')
+        animateCSS(addContainer, 'zoomOut', 'hide')
 
         setTimeout(() => {
             showListContainer();
-        }, 800);
+        },1000);
 
     })
 
@@ -97,46 +100,62 @@ const addtoFirebase = (title, url, tags) => {
 const getArticles = () => {
     log("Get articles of type " + section)
 
-    listOfArticles.innerHTML = `<ul class="list-group"`;
+    articleArray=[];
 
     db.collection("articles").where("uid", "==", UID)
     .get()
     .then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
 
-            let unread=doc.data().unread;
-            let unreadClass = unread ? `unread` : ``;
-            let title = doc.data().title.length>25 ? doc.data().title.substring(0, 25) + '...' : doc.data().title;
-
-            let url = doc.data().url;
-            let docID = doc.id;
-
-            let render=true;
-
-            let html = `
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span class="article-title ${unreadClass}"><a href="${url}" target="_blank" onclick="readArticle('${docID}')">${title}</a></span>
-            <i class="far fa-edit edit" title="Edit"></i>
-            <i class="far fa-trash-alt delete" title="Delete"></i>
-            </li>
-            `;
-            
-
-            if ((section=='unread' && !unread) || (section=='archive' && unread) || (section=='tags')) {
-                html="";
-            }
-
-            listOfArticles.innerHTML += html;
+            articleArray.push(doc);
        
         });
 
-        listOfArticles.innerHTML += `</ul>`;
+        renderList();
+
     })
     .catch(function(error) {
         console.log("Error getting documents: ", error);
     });
 
 };
+
+const renderList = () => {
+
+    console.log('Render list');
+
+    listOfArticles.innerHTML = `<ul class="list-group"`;
+
+    articleArray.forEach(article => {
+
+        let unread=article.data().unread;
+        let unreadClass = unread ? `unread` : ``;
+        let title = article.data().title.length>25 ? article.data().title.substring(0, 25) + '...' : article.data().title;
+    
+        let url = article.data().url;
+        let docID = article.id;
+    
+        let render=true;
+    
+        let html = `
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span class="article-title ${unreadClass}"><a href="${url}" target="_blank" onclick="readArticle('${docID}')">${title}</a></span>
+        <i class="far fa-edit edit" title="Edit"></i>
+        <i class="far fa-trash-alt delete" title="Delete"></i>
+        </li>
+        `;
+        
+    
+        if ((section=='unread' && !unread) || (section=='archive' && unread) || (section=='tags')) {
+            html="";
+        }
+    
+        listOfArticles.innerHTML += html;
+    
+
+    })
+
+}
 
 
 //Set article as read
@@ -161,3 +180,24 @@ const readArticle = (docID) => {
 }
 
 const shortenTitle = title => title.length()>=20 ?  title.substring(1, 20) + '...' : title;
+
+
+//Listen for search term change
+search.addEventListener('keyup', () => {
+    const searchTerm = search.value.trim();
+    filterList(searchTerm);
+});
+
+//Filter todo list by search term
+const filterList = (searchTerm) => {
+
+    //Iterate array and add or remove 'filter-out' class
+    Array.from(list.children)
+        .filter(todo => !todo.textContent.includes(searchTerm))
+        .forEach((todo) => todo.classList.add('filter-out'))
+
+    Array.from(list.children)
+    .filter(todo => todo.textContent.includes(searchTerm))
+    .forEach((todo) => todo.classList.remove('filter-out'))
+    
+}

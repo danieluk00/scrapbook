@@ -1,7 +1,7 @@
-let UID, userEmail, loggedIn;
-const loginBtn = document.querySelector('.username');
+let UID, userName, loggedIn;
+const userNameBtn = document.querySelector('.username');
 
-loginBtn.addEventListener('submit', e => {
+userNameBtn.addEventListener('submit', e => {
     e.preventDefault();
     loginWithGoogle();
 })
@@ -9,10 +9,16 @@ loginBtn.addEventListener('submit', e => {
 auth.onAuthStateChanged(user => {
 
   if (user) {
-    log('Logged in');
+
+    log('Logged in: '+user);
     UID = user.uid;
-    userEmail = user.email;
-    loginBtn.textContent = userEmail;
+    userName = user.displayName;
+    userNameBtn.textContent = userName;
+    changeVisibility(loginContainer,'hide');
+    changeVisibility(userNameBtn,'show');
+    changeVisibility(listContainer,'show');
+    changeVisibility(plusIcon,'show');
+
     loggedIn=true;
 
     getArticles('unread');
@@ -21,7 +27,13 @@ auth.onAuthStateChanged(user => {
 
     log('Not logged in')
     loggedIn = false;
-    loginWithGoogle();
+
+    changeVisibility(loginContainer,'show');
+    changeVisibility(listContainer,'hide');
+    changeVisibility(addContainer,'hide');
+    changeVisibility(plusIcon,'hide');
+    changeVisibility(userNameBtn,'hide');
+
   }
 
 })
@@ -30,19 +42,36 @@ const provider = new firebase.auth.GoogleAuthProvider();
 
 const loginWithGoogle = () => {
 
-  firebase.auth().signInWithPopup(provider).then(function(result) {
-    var token = result.credential.accessToken;
-    var user = result.user;
-    setCookie('uid',user.uid,365);
-    setCookie('email',user.email,365);
-    setUserFromCookie();
+   firebase.auth().signInWithPopup(provider).then(function(result) {
+        if (result.credential) {
+          var token = result.credential.accessToken;
+        }
+        var user = result.user;
+      }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        var email = error.email;
+        var credential = error.credential;
 
-  }).catch(function(error) {
+        document.querySelector('.login-error').textContent=errorMessage;
+        // ...
+      });
 
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    var email = error.email;
-    var credential = error.credential;
-  });
+}
+
+
+const logout = () => {
+  if (confirm('Are you sure you want to log out?')) {
+
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+    }, function(error) {
+      // An error happened.
+    });
+
+} else {
+    // Do nothing!
+}
 
 }
