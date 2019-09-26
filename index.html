@@ -16,17 +16,26 @@
 
         <nav class="navbar navbar-light justify-content-between">
             <a class="navbar-brand">Scrapbook</a>
-            <button class="btn btn-light btn-sm username my-2 my-sm-0" type="submit">Log in</button>
+            <button type="submit" class="btn btn-light btn-sm username my-2 my-sm-0 d-none" onclick="logout();">User</button>
         </nav>
 
+        <h1 class="mb-4 font-weight-light text-center title">Scrapbook</h1>
+
         <div class="container">
+
+        <div class="login-container d-none">
+
+            <p>Please login with your Google account to use Scrapbook.</p>
+            <button type="submit" name="submit" id="submit" class="btn add-btn btn-primary login-btn" onclick="loginWithGoogle()">Log in</button>
+            <p class="text-muted small">Pop-ups must be enabled in your browser.</p>
+            <p class="login-error"></p>
+        </div>
 
             <h1><i class="fas fa-plus-circle" alt="Add article" onclick="showAddContainer()"></i></h1>
 
                 <div class="list-container">
 
                         <header class="text-center text-dark my-4">
-                            <h1 class="mb-4 font-weight-light text-center">Scrapbook</h1>
                             
                             <ul class="nav nav-pills list-nav badge-light">
                                 <li class="nav-item">
@@ -40,6 +49,14 @@
                                 </li>
                             </ul>
                         </header>
+
+                        <div class="search-filter">
+                            <h5 class="my-title mb-2 font-weight-light"></h5>
+                            <form class="search" autocomplete="off">
+                                <input class="form-control m-auto searchbox rounded-pill" type="text" name="search" placeholder="Filter my articles..." />
+                                <i class="far fa-search-alt"></i>
+                            </form>
+                        </div>
 
                         <ul class="list-group">
                         </ul>
@@ -94,11 +111,12 @@
 
  <script>
  var firebaseConfig = {
-     apiKey: "AIzaSyDpom2CBYSCw_RBo146mVKZxYEB5SbJgWE",
-     authDomain: "readinglistuk00.firebaseapp.com",
-     databaseURL: "https://readinglistuk00.firebaseio.com",
-     projectId: "readinglistuk00",
-     appId: "1:590081192969:web:4f4e6abff0bb25ecb974d8"
+    apiKey: "AIzaSyDgYKSO8KsAq8uYigdpqCZPeoabRbEoHyg",
+    authDomain: "scrapbookuk00.firebaseapp.com",
+    databaseURL: "https://scrapbookuk00.firebaseio.com",
+    projectId: "scrapbookuk00",
+    appId: "1:983027929912:web:e9fdbc6c09e7f6dd6027cd",
+    measurementId: "G-4KQH82C2T2"
  };
  // Initialize Firebase
  firebase.initializeApp(firebaseConfig);
