@@ -13,7 +13,7 @@ const loginBtn = document.querySelector('.login-btn');
 const articleCountText = document.querySelector('.article-Count');
 const listNav = document.querySelector('.list-nav');
 
-let section='unread', articleArray=[], tagArray=[], tagCountArray=[], searchTerm, justAdded, tagFilter, addMode, editDocID;
+let section="unread", listSection='unread', articleArray=[], tagArray=[], tagCountArray=[], searchTerm, justAdded, tagFilter, addMode, editDocID;
 const debug=true;
 
 //ADD NEW ARTICLE
@@ -53,12 +53,12 @@ const addtoFirebase = (title, url, tags, description, unread) => {
     if (addMode=='add') {
         db.collection("articles").add(object).then(() => {
             getArticles();
-            changeSection('unread');
+            changeSection(listSection);
         });
     } else {
         db.collection("articles").doc(editDocID).set(object).then(() => {
             getArticles();
-            changeSection('unread');
+            changeSection(listSection);
         });
     }
 }

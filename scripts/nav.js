@@ -1,7 +1,9 @@
 //Change section
 const changeSection = newSection => {
 
-    newSection!=null ? section=newSection : "";
+    log(newSection);
+
+    newSection!=undefined ? section=newSection : "";
 
     //Make all menu sections inactive
     while (document.querySelector('.active')) {
@@ -21,7 +23,7 @@ const showAddContainer = () => {
     document.querySelector('.extra-options').classList.add('d-none');
     addMode='add';
 
-    document.querySelector('.card-title').textContent="Add new article";
+    document.querySelector('.card-title').innerHTML=`<b>Add new article</b>`;
     document.querySelector('.add-article-btn').innerHTML="Add to scrapbook";
 
     addForm.title.value = "";
@@ -35,9 +37,14 @@ const showAddContainer = () => {
 
 //Show list of articles
 const showListContainer = () => {
+
+    if (section=='unread' || section=='archive' || section=='tags') {
+        listSection=section;
+    }
+
     changeVisibility(addContainer, 'hide');
     changeVisibility(listContainer, 'show');
-    section=='tags' ? renderTags() : renderList();
+    listSection=='tags' ? renderTags() : renderList();
 }
 
 
@@ -49,7 +56,7 @@ const editArticle = (docID,title,url,description,tags,unread) => {
     document.querySelector('.extra-options').classList.add('d-none');
     addMode='edit';
 
-    document.querySelector('.card-title').textContent="Edit article";
+    document.querySelector('.card-title').innerHTML=`<b>Edit article:</b> ${title}`;
     document.querySelector('.add-article-btn').innerHTML="Save changes";
 
     addForm.title.value = title;
@@ -58,10 +65,14 @@ const editArticle = (docID,title,url,description,tags,unread) => {
     addForm.description.value =description;
     addForm.markasread.checked = (unread=='true') ? false : true;
 
-    log(unread);
-    log(addForm.markasread.checked);
+    //showExtraOptions();
 
     editDocID = docID;
 
     document.querySelector('.enter-title').focus();
+}
+
+//Add/edit form cancel button clicked
+const cancel = () => {
+    changeSection(listSection);
 }
