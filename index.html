@@ -10,7 +10,7 @@
 
     <title>Scrapbook</title>
 </head>
-<body onload="onLoad()">
+<body>
 
     <div class="wrapper"></div>
 
@@ -41,64 +41,78 @@
 
         <div class="container">
 
-        <div class="login-container d-none">
-
-            <p>Please login with your Google account to use Scrapbook.</p>
-            <button type="submit" name="submit" id="submit" class="btn add-btn btn-primary login-btn" onclick="loginWithGoogle()">Log in</button>
-            <p class="text-muted small">Pop-ups must be enabled in your browser.</p>
-            <p class="login-error"></p>
-        </div>
-
-                <div class="list-container">
-
-                        <div class="search-filter">
-                            <h5 class="my-title mb-2 font-weight-light"></h5>
-                            <form class="search" autocomplete="off">
-                                <input class="form-control m-auto searchbox rounded-pill" type="text" name="search" placeholder="Filter my articles..." />
-                                <p class="article-count text-muted"></p>
-                            </form>
+            <div class="login-container d-none">
+                <p>Please request a username and password to use Scrapbook.</p>
+                <form class="login-form">
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control login-input" id="email" placeholder="Email">
                         </div>
-
-                        <ul class="list-group">
-                        </ul>
-
-                        <div class="tag-group">
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control login-password-input" id="password" placeholder="Password">
                         </div>
+                    </div>
+                        <button type="submit" name="login-submit" id="login-submit" class="btn add-btn btn-primary btn-block login-btn">Log in</button>
+                 </form>
+                 <p class="login-error"></p>
+            </div>
 
+            <div class="list-container d-none">
+
+                <div class="search-filter">
+                    <h5 class="my-title mb-2 font-weight-light"></h5>
+                    <form class="search" autocomplete="off">
+                        <input class="form-control m-auto searchbox rounded-pill" type="text" name="search" placeholder="Filter my articles..." />
+                        <p class="article-count text-muted"></p>
+                    </form>
                 </div>
 
-                <div class="add-container d-none">
+                <ul class="list-group">
+                </ul>
 
-                        <div class="add-article card">
-                            <div class="card-body">
-                                <h5 class="card-title font-weight-light">Add article</h5>
-                                <form class="add-form" autocomplete="off">
-                                
-                                    <label for="title">Title</label>
-                                    <input class="form-control font-weight-light input-padding enter-title" type="text" placeholder="Article title" name="title" autocomplete="off" required>
+                <div class="tag-group">
+                </div>
 
-                                    <label for="url">URL</label>
-                                    <input class="form-control font-weight-light input-padding" type="url" placeholder="URL" name="url" autocomplete="off" required>
+            </div>
 
-                                    <p class="expand-options-icon" onclick="showExtraOptions();">More options<i class="fas fa-chevron-circle-down fa-check" style="margin-left:10px" title="More options"></i></p>
+            <div class="add-container d-none">
 
-                                    <div class="extra-options d-none">
-                                        <label for="description">Description</label>
-                                        <input class="form-control font-weight-light" type="text" placeholder="Description" name="description" autocomplete="off">
-                                        <small id="tagHelp" class="form-text text-muted input-padding">Anything to help you find this article later</small>
-                
-                                        <label for="tags">Tags</label>
-                                        <input class="form-control font-weight-light" type="text" placeholder="news,sport,politics" name="tags"  autocomplete="off">
-                                        <small id="tagHelp" class="form-text text-muted input-padding">Add tags separated by commas</small>
-                                    </div>
+                <div class="add-article card">
+                    <div class="card-body">
+                        <h5 class="card-title font-weight-light">Add article</h5>
+                        <form class="add-form" autocomplete="off">
+                        
+                            <label for="title">Title</label>
+                            <input class="form-control font-weight-light input-padding enter-title" type="text" placeholder="Article title" name="title" autocomplete="off" required>
 
-                                    <button type="submit" name="submit" id="submit" class="btn add-article-btn btn-primary" onclick="">Add to scrapbook</button>
+                            <label for="url">URL</label>
+                            <input class="form-control font-weight-light input-padding" type="url" placeholder="URL" name="url" autocomplete="off" required>
 
-                                </form>
+                            <p class="expand-options-icon" onclick="showExtraOptions();">More options<i class="fas fa-chevron-circle-down fa-check" style="margin-left:10px" title="More options"></i></p>
+
+                            <div class="extra-options d-none">
+                                <label for="description">Description</label>
+                                <input class="form-control font-weight-light" type="text" placeholder="Description" name="description" autocomplete="off">
+                                <small id="tagHelp" class="form-text text-muted input-padding">Anything to help you find this article later</small>
+        
+                                <label for="tags">Tags</label>
+                                <input class="form-control font-weight-light" type="text" placeholder="news,sport,politics" name="tags"  autocomplete="off">
+                                <small id="tagHelp" class="form-text text-muted input-padding">Add tags separated by commas</small>
+
+                                <input type="checkbox" name="markasread"> Mark as read<br>
                             </div>
-                        </div>
-                
+
+                            <button type="submit" name="submit" id="submit" class="btn add-article-btn btn-primary" onclick="">Add to scrapbook</button>
+
+                        </form>
+                    </div>
                 </div>
+            
+            </div>
 
         </div>
 
@@ -130,6 +144,7 @@
 
  <script src="scripts/auth.js"></script>
  <script src="scripts/app.js"></script>
+ <script src="scripts/nav.js"></script>
  <script src="scripts/myfunctions.js"></script>
 
 </body>

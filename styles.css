@@ -37,6 +37,13 @@ body{
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    max-width:500px;
+}
+
+.sign-in-form{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 /* List of articles */
@@ -164,7 +171,11 @@ margin:10px;
     flex-direction: column;
   }
 
-  .btn{
+  .extra-options{
+    margin-bottom:20px;
+  }
+
+  .tag-btn{
       margin:5px 10px;
   }
   
