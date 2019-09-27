@@ -78,6 +78,7 @@ loginForm.addEventListener('submit', e => {
     var errorCode = error.code;
     var errorMessage = error.message;
     document.querySelector('.login-error').textContent=errorMessage;
+    animateCSS(loginForm,'shake');
     // ...
   });
 

@@ -2,7 +2,9 @@ const addContainer = document.querySelector('.add-container');
 const listContainer = document.querySelector('.list-container');
 const loginContainer = document.querySelector('.login-container');
 const listOfArticles = document.querySelector('.list-group');
+const tagContainer = document.querySelector('.tag-container');
 const tagGroup = document.querySelector('.tag-group');
+const tagTitle = document.querySelector('.tag-title');
 const addCard = document.querySelector('.add-article');
 const addForm = document.querySelector('.add-form');
 const addOverlay = document.querySelector('.overlay');
@@ -12,6 +14,7 @@ const search = document.querySelector('.search');
 const loginBtn = document.querySelector('.login-btn');
 const articleCountText = document.querySelector('.article-Count');
 const listNav = document.querySelector('.list-nav');
+const moreOptionsLink = document.querySelector('.expand-options-icon');
 
 let section="unread", listSection='unread', articleArray=[], tagArray=[], tagCountArray=[], searchTerm, justAdded, tagFilter, addMode, editDocID;
 const debug=true;
@@ -32,6 +35,7 @@ addForm.addEventListener('submit', e => {
     let unread = !addForm.markasread.checked;
 
     addtoFirebase(title,url,tags,description,unread);
+
 })
 
 //Add new article to DB
@@ -63,9 +67,10 @@ const addtoFirebase = (title, url, tags, description, unread) => {
     }
 }
 
-const removeSpecialCharacters = string => string.replace(/[&\/\\#,+()$~%'":*?<>{}]/g, '');
+//REGEX
+const removeSpecialCharacters = string => string.replace(/[\/\\,+~'"*{}]/g, '');
 
-const removeSpecialCharactersExceptCommas = string => string.replace(/[&\/\\#+()$~%'":*?<>{}]/g, '');
+const removeSpecialCharactersExceptCommas = string => string.replace(/[\/\\+~'"*{}]/g, '');
 
 //SHOW ARTICLES
 
@@ -76,13 +81,17 @@ const getArticles = () => {
     articleArray=[];
     tagArray=[];
 
-    db.collection("articles").where("uid", "==", UID).get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-            //Add documents to array
-            addToTagArray(doc);
-            articleArray.push(doc);
+    db.collection("articles")
+        .where("uid", "==", UID)
+        .orderBy('created_at')
+        .get().then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    //Add documents to array
+                    addToTagArray(doc);
+                    articleArray.push(doc);
         });
 
+        articleArray.reverse(); //Reverse array to show most recent articles first
         renderList(); //Then render list on page
 
     })
@@ -98,7 +107,7 @@ const renderList = () => {
 
     //Make list elements visible
     changeVisibility(listOfArticles,'show');
-    changeVisibility(tagGroup,'hide');
+    changeVisibility(tagContainer,'hide');
     changeVisibility(search,'show');
 
     listOfArticles.innerHTML = `<ul class="list-group"`; //Start of ul list
@@ -146,7 +155,11 @@ const renderList = () => {
         if (section=='tags' && !tags.toLowerCase().includes(tagFilter)) {
             html=""
         }
-        //Get visible total;
+        //Don't show more than 25 articles on the page
+        if (visibleCount>=25) {
+            html=""
+        }
+        //Get visible total
         if (html!="") {
             visibleCount++;
         }
@@ -186,8 +199,9 @@ const renderTags = () => {
 
     //Show containers
     changeVisibility(listOfArticles,'hide');
-    changeVisibility(tagGroup,'show');
+    changeVisibility(tagContainer,'show');
     changeVisibility(search,'hide');
+    changeVisibility(tagTitle,'show');
 
     tagGroup.innerHTML = ``;
 
@@ -196,6 +210,8 @@ const renderTags = () => {
         let html = `<button type="button" class="btn btn-dark tag-btn" onclick="showTag('${tag}')">${tag}</button>`;
         tagGroup.innerHTML += html;
     })
+
+    tagTitle.textContent = tagGroup.innerHTML == `` ? "No tags to show" : "Select a tag to view associated articles:";
 }
 
 //Show articles associated to a selected tag

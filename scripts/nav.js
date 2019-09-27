@@ -18,9 +18,14 @@ const changeSection = newSection => {
 
 //Show 'Add article' form
 const showAddContainer = () => {
+
+    animateCSS(addContainer,'fadeIn');
+
     changeVisibility(addContainer, 'show');
     changeVisibility(listContainer, 'hide');
+
     document.querySelector('.extra-options').classList.add('d-none');
+    changeVisibility(moreOptionsLink,'show');
     addMode='add';
 
     document.querySelector('.card-title').innerHTML=`<b>Add new article</b>`;
@@ -42,6 +47,8 @@ const showListContainer = () => {
         listSection=section;
     }
 
+    animateCSS(listContainer,'fadeIn');
+
     changeVisibility(addContainer, 'hide');
     changeVisibility(listContainer, 'show');
     listSection=='tags' ? renderTags() : renderList();
@@ -50,6 +57,8 @@ const showListContainer = () => {
 
 //Edit article
 const editArticle = (docID,title,url,description,tags,unread) => {
+
+    animateCSS(addContainer,'bounceInDown');
 
     changeVisibility(addContainer, 'show');
     changeVisibility(listContainer, 'hide');
@@ -64,8 +73,9 @@ const editArticle = (docID,title,url,description,tags,unread) => {
     addForm.tags.value = tags;
     addForm.description.value = description;
     addForm.markasread.checked = !unread;
-    
-    //showExtraOptions();
+
+    showExtraOptions();
+    changeVisibility(moreOptionsLink,'hide');
 
     editDocID = docID;
 
