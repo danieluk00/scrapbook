@@ -65,6 +65,12 @@ body{
     margin-right:10px;
     max-height:60%;
 }
+
+.card{
+    border-radius: 10px;
+    border-color: maroon;
+}
+
 .card-body{
     min-width:650px
 }
@@ -179,7 +185,7 @@ margin:10px;
       margin:5px 10px;
   }
   
-  .cancel-span{
+  .cancel-link{
       text-align: center;
       margin-top:20px;
   }
