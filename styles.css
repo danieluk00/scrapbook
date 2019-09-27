@@ -25,10 +25,26 @@ body{
     color:white;
 }
 
+.navbar-brand{
+    color:white !important;
+}
+
 .title{
     padding-top:10px;
     margin-top:10px;
 }
+
+@media (max-width: 1000px) {
+    .title{
+        display: none !important;
+    }
+    .username{
+        margin:-5px;
+        font-size:0.7em;
+    }
+}
+
+
 
 /* Login container */
 
@@ -91,7 +107,15 @@ body{
         min-width:400px
     }
 }
-@media  (max-width: 449px) {
+@media  (min-width: 375px) and (max-width: 449px) {
+    .list-group{
+        min-width:350px
+    }
+    .card-body{
+        min-width:350px
+    }
+}
+@media  (max-width: 374px) {
     .list-group{
         min-width:300px
     }
@@ -111,6 +135,7 @@ body{
 
 .searchbox{
     background:white !important;
+    max-width:500px;
 }
 
 .unread{
@@ -188,6 +213,11 @@ margin:10px;
   .cancel-link{
       text-align: center;
       margin-top:20px;
+      margin-bottom:-15px;
+  }
+
+  .card-title{
+      padding-bottom:10px;
   }
 
 /* List article */
@@ -207,13 +237,34 @@ margin:10px;
     margin-right:10px;
 }
 
+.tag-container{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .tag-group{
    display:flex;
    flex-direction: row;
    justify-content: center;
    flex-wrap: wrap;
+   max-width:600px;
+}
+
+.tag-title{
+    display:flex;
+    justify-self: center;
 }
 
 .far{
     padding-left:15px;
+}
+
+.add-nav-link{
+    color:maroon !important;
+}
+
+.add-nav-link.active{
+    background-color:maroon !important;
+    color:white !important;
 }

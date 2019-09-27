@@ -15,11 +15,11 @@
     <div class="wrapper"></div>
 
         <nav class="navbar navbar-light justify-content-between">
-            <a class="navbar-brand">Scrapbook</a>
+            <a class="navbar-brand" href="#" onclick="changeSection('unread')"><i class="far fa-bookmark"></i> Scrapbook</a>
             <button type="submit" class="btn btn-light btn-sm username my-2 my-sm-0 d-none" onclick="logout();">User</button>
         </nav>
 
-        <h1 class="mb-4 font-weight-light text-center title">Scrapbook</h1>
+        <h1 class="mb-4 font-weight-light text-center title"><i class="far fa-bookmark"></i> Scrapbook</h1>
 
         <header class="text-center text-dark my-4">
                             
@@ -34,7 +34,7 @@
                     <a class="nav-link" href="#" id="tags" onclick="changeSection('tags')">Tags</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link add-nav-link" href="#" id="add" onclick="changeSection('add')">Add+</a>
+                    <a class="nav-link add-nav-link" href="#" id="add" onclick="changeSection('add')">Add <i class="fas fa-pencil-alt"></i></a>
                 </li>
             </ul>
         </header>
@@ -66,7 +66,7 @@
                 <div class="search-filter">
                     <h5 class="my-title mb-2 font-weight-light"></h5>
                     <form class="search" autocomplete="off">
-                        <input class="form-control m-auto searchbox rounded-pill" type="text" name="search" placeholder="Filter my articles..." />
+                        <input class="form-control m-auto searchbox rounded-pill" type="text" name="search" placeholder="Filter articles..." />
                         <p class="article-count text-muted"></p>
                     </form>
                 </div>
@@ -74,9 +74,11 @@
                 <ul class="list-group">
                 </ul>
 
-                <div class="tag-group">
+                <div class="tag-container">
+                    <div class="tag-title d-none">Select a tag to view associated articles:</div>
+                    <div class="tag-group">
+                    </div>
                 </div>
-
             </div>
 
             <div class="add-container d-none">
@@ -85,25 +87,41 @@
                     <div class="card-body">
                         <h5 class="card-title font-weight-light">Add article</h5>
                         <form class="add-form" autocomplete="off">
-                        
-                            <label for="title">Title</label>
-                            <input class="form-control font-weight-light input-padding enter-title" type="text" placeholder="Article title" name="title" autocomplete="off" required>
-
-                            <label for="url">URL</label>
-                            <input class="form-control font-weight-light input-padding" type="url" placeholder="URL" name="url" autocomplete="off" required>
-
+                            <div class="form-group row">
+                                <label for="title" class="col-sm-2 col-form-label">Title</label>
+                                <div class="col-sm-10">
+                                    <input class="enter-title form-control font-weight-light" type="text" placeholder="" name="title" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="title" class="col-sm-2 col-form-label">URL</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control font-weight-light enter-url" type="url" placeholder="" name="url" autocomplete="off" required>
+                                </div>
+                            </div>
                             <p class="expand-options-icon" onclick="showExtraOptions();">More options<i class="fas fa-chevron-circle-down fa-check" style="margin-left:10px" title="More options"></i></p>
 
                             <div class="extra-options d-none">
-                                <label for="description">Description</label>
-                                <input class="form-control font-weight-light" type="text" placeholder="Description" name="description" autocomplete="off">
-                                <small id="tagHelp" class="form-text text-muted input-padding">Anything to help you find this article later</small>
-        
-                                <label for="tags">Tags</label>
-                                <input class="form-control font-weight-light" type="text" placeholder="news,sport,politics" name="tags"  autocomplete="off">
-                                <small id="tagHelp" class="form-text text-muted input-padding">Add tags separated by commas</small>
-
-                                <input type="checkbox" name="markasread"> Mark as read<br>
+                                <div class="form-group row">
+                                    <label for="description" class="col-sm-2 col-form-label">Notes</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control font-weight-light" rows="3" type="text" placeholder="" name="description" autocomplete="off">
+                                        <small id="tagHelp" class="form-text text-muted">Anything to help you find this article later</small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="description" class="col-sm-2 col-form-label">Tags</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control font-weight-light" type="text" placeholder="e.g. news,sport,politics" name="tags" autocomplete="off">
+                                        <small id="tagHelp" class="form-text text-muted">Add tags separated by commas</small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="description" class="col-sm-2 col-form-label"></label>
+                                    <div class="col-sm-10">                               
+                                        <input type="checkbox" name="markasread"> Mark as read<br>
+                                    </div>
+                                </div>
                             </div>
 
                             <button type="submit" name="submit" id="submit" class="btn add-article-btn btn-primary" onclick="">Add to scrapbook</button>
