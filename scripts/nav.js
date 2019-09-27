@@ -62,9 +62,9 @@ const editArticle = (docID,title,url,description,tags,unread) => {
     addForm.title.value = title;
     addForm.url.value = url;
     addForm.tags.value = tags;
-    addForm.description.value =description;
-    addForm.markasread.checked = (unread=='true') ? false : true;
-
+    addForm.description.value = description;
+    addForm.markasread.checked = !unread;
+    
     //showExtraOptions();
 
     editDocID = docID;

@@ -40,10 +40,10 @@ const addtoFirebase = (title, url, tags, description, unread) => {
     const now = new Date();
 
     const object = {
-        title,
+        title: removeSpecialCharacters(title),
         url,
-        tags,
-        description,
+        tags: removeSpecialCharactersExceptCommas(tags),
+        description: removeSpecialCharacters(description),
         uid: UID,
         unread,
         created_at:firebase.firestore.Timestamp.fromDate(now)
@@ -62,6 +62,10 @@ const addtoFirebase = (title, url, tags, description, unread) => {
         });
     }
 }
+
+const removeSpecialCharacters = string => string.replace(/[&\/\\#,+()$~%'":*?<>{}]/g, '');
+
+const removeSpecialCharactersExceptCommas = string => string.replace(/[&\/\\#+()$~%'":*?<>{}]/g, '');
 
 //SHOW ARTICLES
 
@@ -120,7 +124,7 @@ const renderList = () => {
         <li class="list-group-item d-flex justify-content-between align-items-center">
         <span class="article-title ${unreadClass}"><a href="${url}" target="_blank" onclick="readArticle('${docID}')">${title}</a></span>
         <span class="icons">
-            <i class="far fa-edit edit" title="Edit" onclick="editArticle('${docID}','${title}','${url}','${description}','${tags}','${unread}')"></i>
+            <i class="far fa-edit edit" title="Edit" onclick="editArticle('${docID}','${title}','${url}','${description}','${tags}',${unread})"></i>
             <i class="far fa-trash-alt delete" title="Delete" onclick="deleteArticle('${docID}', '${title}',parentElement.parentElement)"></i>
         </span>
         </li>
