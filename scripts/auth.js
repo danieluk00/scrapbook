@@ -1,12 +1,9 @@
 let UID, userName, loggedIn;
-const userNameBtn = document.querySelector('.username');
+const userNameBtn = document.querySelector('.fa-user');
 const loginForm = document.querySelector('.login-form');
 const loginInput = document.querySelector('.login-input');
+const loginError = document.querySelector('.login-error');
 
-userNameBtn.addEventListener('submit', e => {
-    e.preventDefault();
-    loginWithGoogle();
-})
 
 auth.onAuthStateChanged(user => {
 
@@ -15,7 +12,7 @@ auth.onAuthStateChanged(user => {
     log('Logged in: '+user);
     UID = user.uid;
     userName = user.email;
-    userNameBtn.textContent = userName;
+    //userNameBtn.textContent = userName;
     changeVisibility(loginContainer,'hide');
     changeVisibility(listNav,'show');
     changeVisibility(listContainer,'show');
@@ -67,25 +64,27 @@ const loginWithGoogle = () => {
 
 
 loginForm.addEventListener('submit', e => {
-
+  
   e.preventDefault();
 
   let email = loginForm.email.value;
-  let password = loginForm.password.value;
+  let password = loginForm.password.value
 
-  firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    document.querySelector('.login-error').textContent=errorMessage;
-    animateCSS(loginForm,'shake');
-    // ...
-  });
+    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+  
+      setErrorMessage(errorMessage);
+      animateCSS(loginForm,'shake');
+      // ...
+    });
 
 })
 
+
 const logout = () => {
-  if (confirm('Are you sure you want to log out?')) {
+  if (confirm('Logged in as '+userName+'\n\nAre you sure you want to log out?')) {
     firebase.auth().signOut().then(function() {
       // Sign-out successful.
     }, function(error) {
@@ -98,9 +97,33 @@ const logout = () => {
 }
 
 loginInput.addEventListener('keyup', () => {
-  document.querySelector('.login-error').textContent="";
+  setErrorMessage("");
 });
 
-loginInput.addEventListener('keyup', () => {
-  document.querySelector('.login-password-input').textContent="";
-});
+const setErrorMessage = text => loginError.textContent=text;
+
+const resetPassword = () => {
+
+  setErrorMessage("");
+
+  var auth = firebase.auth();
+  var emailAddress = loginForm.email.value;
+  
+  auth.sendPasswordResetEmail(emailAddress).then(function() {
+
+    setErrorMessage('You will receive an email with a link to reset your password.');
+
+  }).catch(function(error) {
+
+    setErrorMessage('Something went wrong. Please enter a valid email address and try again.')
+    animateCSS(loginForm,'shake');
+
+  });
+
+}
+
+const createAccount = () => {
+
+  loginBtn.textContent="Create account";
+
+}

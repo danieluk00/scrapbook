@@ -37,7 +37,7 @@ const showAddContainer = () => {
     addForm.description.value ="";
     addForm.markasread.checked = false;
 
-    document.querySelector('.enter-title').focus();
+    //document.querySelector('.enter-title').focus();
 }
 
 //Show list of articles
@@ -79,7 +79,7 @@ const editArticle = (docID,title,url,description,tags,unread) => {
 
     editDocID = docID;
 
-    document.querySelector('.enter-title').focus();
+   // document.querySelector('.enter-title').focus();
 }
 
 //Add/edit form cancel button clicked

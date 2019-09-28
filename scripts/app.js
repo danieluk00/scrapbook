@@ -15,6 +15,7 @@ const loginBtn = document.querySelector('.login-btn');
 const articleCountText = document.querySelector('.article-Count');
 const listNav = document.querySelector('.list-nav');
 const moreOptionsLink = document.querySelector('.expand-options-icon');
+const maxInLIst=10;
 
 let section="unread", listSection='unread', articleArray=[], tagArray=[], tagCountArray=[], searchTerm, justAdded, tagFilter, addMode, editDocID;
 const debug=true;
@@ -79,7 +80,7 @@ const getArticles = () => {
     log("Get articles of type " + section)
 
     articleArray=[];
-    tagArray=[];
+    tagArray=['starred'];
 
     db.collection("articles")
         .where("uid", "==", UID)
@@ -129,15 +130,19 @@ const renderList = () => {
         changeVisibility(search,'show');
 
         //Create HTML template
-        let html = `
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span class="article-title ${unreadClass}"><a href="${url}" target="_blank" onclick="readArticle('${docID}')">${title}</a></span>
-        <span class="icons">
-            <i class="far fa-edit edit" title="Edit" onclick="editArticle('${docID}','${title}','${url}','${description}','${tags}',${unread})"></i>
-            <i class="far fa-trash-alt delete" title="Delete" onclick="deleteArticle('${docID}', '${title}',parentElement.parentElement)"></i>
-        </span>
-        </li>
-        `;
+        let html="";
+
+        if (visibleCount<=maxInLIst) {
+            html = `
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span class="article-title ${unreadClass}"><a href="${url}" target="_blank" onclick="readArticle('${docID}')">${title}</a></span>
+            <span class="icons">
+                <i class="far fa-edit edit" title="Edit" onclick="editArticle('${docID}','${title}','${url}','${description}','${tags}',${unread})"></i>
+                <i class="far fa-trash-alt delete" title="Delete" onclick="deleteArticle('${docID}', '${title}',parentElement.parentElement)"></i>
+            </span>
+            </li>
+            `;
+        }
     
         //Count total articles in section (without filters)
         if ((section=='unread' && unread) || (section=='archive' && !unread) || (section=='tags' && tags.toLowerCase().includes(tagFilter)))  {
@@ -156,7 +161,7 @@ const renderList = () => {
             html=""
         }
         //Don't show more than 25 articles on the page
-        if (visibleCount>=25) {
+        if (visibleCount>=maxInLIst) {
             html=""
         }
         //Get visible total
@@ -206,8 +211,11 @@ const renderTags = () => {
     tagGroup.innerHTML = ``;
 
     tagArray.forEach(tag => {
+
+        tagClass = tag=='starred' ? 'btn-warning' : 'btn-dark';
+
         //For each tag in array add HTML to page
-        let html = `<button type="button" class="btn btn-dark tag-btn" onclick="showTag('${tag}')">${tag}</button>`;
+        let html = `<button type="button" class="btn ${tagClass} tag-btn" onclick="showTag('${tag}')">${tag}</button>`;
         tagGroup.innerHTML += html;
     })
 
