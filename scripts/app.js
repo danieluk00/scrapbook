@@ -15,7 +15,7 @@ const loginBtn = document.querySelector('.login-btn');
 const articleCountText = document.querySelector('.article-Count');
 const listNav = document.querySelector('.list-nav');
 const moreOptionsLink = document.querySelector('.expand-options-icon');
-const maxInLIst=10;
+const maxInList=20;
 
 let section="unread", listSection='unread', articleArray=[], tagArray=[], tagCountArray=[], searchTerm, justAdded, tagFilter, addMode, editDocID;
 const debug=true;
@@ -39,6 +39,16 @@ addForm.addEventListener('submit', e => {
 
 })
 
+//Add title from URL
+document.querySelector('.enter-url').addEventListener('keyup', () => {
+
+if (document.querySelector('.enter-title').value=="") {
+    document.querySelector('.enter-title').value = getTitleFromURL(document.querySelector('.enter-url').value);
+
+}
+
+});
+
 //Add new article to DB
 const addtoFirebase = (title, url, tags, description, unread) => {
 
@@ -53,6 +63,8 @@ const addtoFirebase = (title, url, tags, description, unread) => {
         unread,
         created_at:firebase.firestore.Timestamp.fromDate(now)
     }
+
+    getSite(url);
 
     //Set add or edit action
     if (addMode=='add') {
@@ -124,18 +136,22 @@ const renderList = () => {
         let description = article.data().description;
         let tags = article.data().tags;
         let docID = article.id;
+        let domain =  getSite(url);
+
+        log(domain);
 
         //Get any search filter term entered
         let searchTerm = search.search.value.trim().toLowerCase();
         changeVisibility(search,'show');
 
+
         //Create HTML template
         let html="";
 
-        if (visibleCount<=maxInLIst) {
+        if (visibleCount<maxInList) {
             html = `
             <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span class="article-title ${unreadClass}"><a href="${url}" target="_blank" onclick="readArticle('${docID}')">${title}</a></span>
+            <span class="article-title"><a href="${url}" class=${unreadClass} target="_blank" onclick="readArticle('${docID}')">${title}</a> ${domain}</span>
             <span class="icons">
                 <i class="far fa-edit edit" title="Edit" onclick="editArticle('${docID}','${title}','${url}','${description}','${tags}',${unread})"></i>
                 <i class="far fa-trash-alt delete" title="Delete" onclick="deleteArticle('${docID}', '${title}',parentElement.parentElement)"></i>
@@ -161,7 +177,7 @@ const renderList = () => {
             html=""
         }
         //Don't show more than 25 articles on the page
-        if (visibleCount>=maxInLIst) {
+        if (visibleCount>=maxInList) {
             html=""
         }
         //Get visible total
@@ -214,8 +230,11 @@ const renderTags = () => {
 
         tagClass = tag=='starred' ? 'btn-warning' : 'btn-dark';
 
+        let tagName = tag.charAt(0).toUpperCase() + tag.substring(1,tag.length);
+
+
         //For each tag in array add HTML to page
-        let html = `<button type="button" class="btn ${tagClass} tag-btn" onclick="showTag('${tag}')">${tag}</button>`;
+        let html = `<button type="button" class="btn ${tagClass} tag-btn" onclick="showTag('${tag}')">${tagName}</button>`;
         tagGroup.innerHTML += html;
     })
 
@@ -281,4 +300,70 @@ const deleteArticle = (docID, title,parentElement) => {
             });
         }, 500);
     }
+}
+
+const getSite = url => {
+
+    //Trim HTTP or HTTPS
+    if (url.substring(0,7)=="http://") {
+        url=url.substring(7,url.length)
+
+    } else if (url.substring(0,8)=="https://") {
+        url=url.substring(8,url.length)
+    }
+
+    //Trim WWW
+    if (url.substring(0,4)=="www.") {
+        url=url.substring(4,url.length)
+    }
+
+    //Trim everything after domain
+    if (url.indexOf('/')!=-1) {
+        url = url.substring(0, url.indexOf('/'));
+    } else if (url.indexOf('?')!=-1) {
+        url = url.substring(0, url.indexOf('/'));
+    }
+
+    if (url.length>15) {
+        url = url.substring(0,15) + "..."
+    }
+
+    return "(" + url + ")"
+
+}
+
+const getTitleFromURL = url => {
+
+    let i=0;
+
+    //Trim HTTP or HTTPS
+    if (url.substring(0,7)=="http://") {
+        url=url.substring(7,url.length)
+
+    } else if (url.substring(0,8)=="https://") {
+        url=url.substring(8,url.length)
+    }
+
+    //Remove trailing slash
+    if (url.substring(url.length-1)=="/") {
+        url = url.substring(0,url.length-1);
+    }
+
+    //Keep removing everything up to the slash
+    while (url.indexOf('/')!=-1 && (url.indexOf('/')!=url.length) && i<20) {
+        url = url.substring(url.indexOf('/')+1,url.length);
+        i++;
+    }
+
+    //Replace dashes with spaces
+    while (url.indexOf('-')!=-1 && i<20) {
+        url= url.replace("-"," ");
+        i++;
+    }
+
+    //Capitalise first letter:
+    url = url.charAt(0).toUpperCase() + url.substring(1,url.length);
+
+    return url;
+
 }
