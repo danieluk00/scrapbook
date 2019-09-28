@@ -23,7 +23,10 @@ const debug=true;
 //ADD NEW ARTICLE
 
 //Add article - show more options
-const showExtraOptions = () => changeVisibility(extraOptionsDiv, 'toggle');
+const showExtraOptions = () => {
+    changeVisibility(extraOptionsDiv, 'toggle');
+    updateTitle();
+}
 
 //New article submitted
 addForm.addEventListener('submit', e => {
@@ -39,20 +42,23 @@ addForm.addEventListener('submit', e => {
 
 })
 
-//Add title from URL
-document.querySelector('.enter-url').addEventListener('keyup input', () => {
-
-if (document.querySelector('.enter-title').value=="") {
-    document.querySelector('.enter-title').value = getTitleFromURL(document.querySelector('.enter-url').value);
-
-}
-
+//Listener for URL entered
+document.querySelector('.enter-url').addEventListener('input', () => {
+    updateTitle();
 });
+
+//Update title if blank
+const updateTitle = () => {
+    if (document.querySelector('.enter-title').value=="") {
+        document.querySelector('.enter-title').value = getTitleFromURL(document.querySelector('.enter-url').value);
+    }
+}
 
 //Add new article to DB
 const addtoFirebase = (title, url, tags, description, unread) => {
 
     const now = new Date();
+    updateTitle(); //If blank, autogenerate title from URL
 
     const object = {
         title: removeSpecialCharacters(title),
@@ -109,7 +115,7 @@ const getArticles = () => {
 
     })
     .catch(function(error) {
-        console.log("Error getting documents: ", error);
+        log("Error getting documents: ", error);
     });
 };
 
@@ -129,7 +135,7 @@ const renderList = () => {
 
         //Get properties of article from array
         let unread=article.data().unread;
-        let unreadClass = unread ? `unread` : ``;
+        let unreadClass = unread ? `class="unread"` : ``;
 
         let title = article.data().title;
         let url = article.data().url;
@@ -151,7 +157,7 @@ const renderList = () => {
         if (visibleCount<maxInList) {
             html = `
             <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span class="article-title"><a href="${url}" class=${unreadClass} target="_blank" onclick="readArticle('${docID}')">${title}</a> ${domain}</span>
+            <span class="article-title"><a href="${url}" ${unreadClass} target='_blank' onclick="readArticle('${docID}')">${title}</a> ${domain}</span>
             <span class="icons">
                 <i class="far fa-edit edit" title="Edit" onclick="editArticle('${docID}','${title}','${url}','${description}','${tags}',${unread})"></i>
                 <i class="far fa-trash-alt delete" title="Delete" onclick="deleteArticle('${docID}', '${title}',parentElement.parentElement)"></i>
@@ -216,7 +222,7 @@ const addToTagArray = doc => {
 
 //Show all tags currently active
 const renderTags = () => {
-    console.log('Render tags');
+    log('Render tags');
 
     //Show containers
     changeVisibility(listOfArticles,'hide');
@@ -283,7 +289,7 @@ const readArticle = (docID) => {
             })
         }
     }).catch(function(error) {
-        console.log("Error getting document:", error);
+        log("Error getting document:", error);
     });
 }
 
@@ -337,36 +343,42 @@ const getSite = url => {
 //.e.g https://www.theguardian.com/politics/2019/sep/28/boris-johnson-no-deal-brexit -> Boris johnson no deal brexit
 const getTitleFromURL = url => {
 
+    let title = url
     let i=0;
 
     //Trim HTTP or HTTPS
-    if (url.substring(0,7)=="http://") {
-        url=url.substring(7,url.length)
+    if (title.substring(0,7)=="http://") {
+        title=title.substring(7,title.length)
 
-    } else if (url.substring(0,8)=="https://") {
-        url=url.substring(8,url.length)
+    } else if (title.substring(0,8)=="https://") {
+        title=title.substring(8,title.length)
     }
 
     //Remove trailing slash
-    if (url.substring(url.length-1)=="/") {
-        url = url.substring(0,url.length-1);
+    if (title.substring(title.length-1)=="/") {
+        title = title.substring(0,title.length-1);
     }
 
     //Keep removing everything up to the slash
-    while (url.indexOf('/')!=-1 && (url.indexOf('/')!=url.length) && i<20) {
-        url = url.substring(url.indexOf('/')+1,url.length);
+    while (title.indexOf('/')!=-1 && (title.indexOf('/')!=title.length) && i<20) {
+        title = title.substring(title.indexOf('/')+1,title.length);
         i++;
     }
 
     //Replace dashes with spaces
-    while (url.indexOf('-')!=-1 && i<20) {
-        url= url.replace("-"," ");
+    while (title.indexOf('-')!=-1 && i<20) {
+        title= title.replace("-"," ");
         i++;
     }
 
     //Capitalise first letter:
-    url = url.charAt(0).toUpperCase() + url.substring(1,url.length);
+    title = title.charAt(0).toUpperCase() + title.substring(1,title.length);
+    title = title.trim()
 
-    return url;
+    if (title=="") {
+        title = url;
+    }
+
+    return title;
 
 }
