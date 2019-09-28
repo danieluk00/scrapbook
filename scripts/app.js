@@ -40,7 +40,7 @@ addForm.addEventListener('submit', e => {
 })
 
 //Add title from URL
-document.querySelector('.enter-url').addEventListener('keyup', () => {
+document.querySelector('.enter-url').addEventListener('keyup input', () => {
 
 if (document.querySelector('.enter-title').value=="") {
     document.querySelector('.enter-title').value = getTitleFromURL(document.querySelector('.enter-url').value);
@@ -302,6 +302,7 @@ const deleteArticle = (docID, title,parentElement) => {
     }
 }
 
+//Extracts domain from URL, e.g. guardian.co.uk
 const getSite = url => {
 
     //Trim HTTP or HTTPS
@@ -332,6 +333,8 @@ const getSite = url => {
 
 }
 
+//Extracts title from URL
+//.e.g https://www.theguardian.com/politics/2019/sep/28/boris-johnson-no-deal-brexit -> Boris johnson no deal brexit
 const getTitleFromURL = url => {
 
     let i=0;
