@@ -43,6 +43,8 @@ const showAddContainer = () => {
 //Show list of articles
 const showListContainer = () => {
 
+    tagFilter="";
+
     if (section=='unread' || section=='archive' || section=='tags') {
         listSection=section;
     }
