@@ -1,7 +1,7 @@
 //Change section
 const changeSection = newSection => {
 
-    log(newSection);
+    log('Change to section: ' + newSection);
 
     newSection!=undefined ? section=newSection : "";
 
@@ -58,7 +58,7 @@ const showListContainer = () => {
 //Edit article
 const editArticle = (docID,title,url,description,tags,unread) => {
 
-    animateCSS(addContainer,'bounceInDown');
+    animateCSS(addContainer,'fadeIn');
 
     changeVisibility(addContainer, 'show');
     changeVisibility(listContainer, 'hide');
