@@ -162,7 +162,7 @@ const renderTags = () => {
     tagArray.forEach(tag => {
 
         //For each tag in array add HTML to page
-        let html = `<button type="button" class="btn btn-${tagClass(tag)} tag-btn" onclick="showTag('${tag}')">${tagName(tag)}</button>`;
+        let html = `<button type="button" class="btn btn-${tagClass(tag)} tag-btn" onclick="showTag('${tag}')">${tagName(tag)} <span class="badge badge-light tag-number">${getTaggedNumber(tag)}</span></button>`;
         tagGroup.innerHTML += html;
     })
 
@@ -172,6 +172,18 @@ const renderTags = () => {
 const tagClass = tag => tag=='starred' ? 'warning' : 'dark';
 
 const tagName = tag => tag.charAt(0).toUpperCase() + tag.substring(1,tag.length);
+
+//Returns number of articles with a particular tag
+const getTaggedNumber = tag => {
+    let count=0;
+
+    articleArray.forEach(article => {
+        if (article.data().tags.toLowerCase().includes(tag.toLowerCase())) {
+            count++;
+        }
+    })
+    return count;
+}
 
 //Show articles associated to a selected tag
 const showTag = tag => {
