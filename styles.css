@@ -25,12 +25,16 @@ body{
     color:white;
 }
 
-.fa-user{
-    padding-top:10px;
-}
-
 .navbar-brand{
     color:white !important;
+}
+
+.nav-icons{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-top:10px;
 }
 
 .title{
@@ -88,12 +92,36 @@ body{
     min-width:650px;
     margin-left:10px;
     margin-right:10px;
-    max-height:60%;
+}
+
+@media (min-width: 1200px) {
+
+    .ul{
+        column-count: 2;
+    }
+}
+
+.article-main{
+    display:flex;
+    flex-direction: column;
+}
+
+.inline-tag{
+    margin-top:5px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.inline-tag:hover{
+    background-color:grey;
+    color:white;
+}
+.badge-warning:hover{
+    background-color: #ffe066;
+    color:black;
 }
 
 .card{
-    border-radius: 10px;
-    border-color: maroon;
+    border-radius: 5px;
 }
 
 .card-body{

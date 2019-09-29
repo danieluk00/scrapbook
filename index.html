@@ -17,28 +17,14 @@
 
         <nav class="navbar navbar-light justify-content-between">
             <a class="navbar-brand" href="#" onclick="changeSection('unread')"><i class="far fa-bookmark"></i> Scrapbook</a>
-            <h4 onclick="logout();"><i class="fas fa-user"></i></h4>
+            <span class="nav-icons">
+                <h4 onclick="showAddContainer();"><i class="fas fa-pencil-alt"></i></h4>
+                <h4 onclick="showListContainer();"><i class="fas fa-book-open" style="margin-left:30px;"></i></h4>
+                <h4 onclick="logout();"><i class="fas fa-user" style="margin-left:30px;"></i></h4>
+            </span>
         </nav>
 
         <h1 class="mb-4 font-weight-light text-center title"><i class="far fa-bookmark"></i> Scrapbook</h1>
-
-        <header class="text-center text-dark my-4">
-                            
-            <ul class="nav nav-pills list-nav d-none">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#" id="unread" onclick="changeSection('unread')">Unread</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" id="archive" onclick="changeSection('archive')">Archive</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" id="tags" onclick="changeSection('tags')">Tags</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link add-nav-link" href="#" id="add" onclick="changeSection('add')">Add <i class="fas fa-pencil-alt"></i></a>
-                </li>
-            </ul>
-        </header>
 
         <div class="container">
 
@@ -66,10 +52,24 @@
 
             <div class="list-container d-none">
 
+                <header class="text-center text-dark my-4">                    
+                    <ul class="nav nav-pills list-nav d-none">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" id="unread" onclick="changeSection('unread')">Unread</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="archive" onclick="changeSection('archive')">Archive</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="tags" onclick="changeSection('tags')">Tags</a>
+                        </li>
+                    </ul>
+                </header>
+
                 <div class="search-filter">
                     <h5 class="my-title mb-2 font-weight-light"></h5>
-                    <form class="search" autocomplete="off">
-                        <input class="form-control m-auto searchbox rounded-pill" type="text" name="search" placeholder="Filter articles..." />
+                    <form class="search" autocomplete="off" onsubmit="return false;">
+                        <input class="form-control m-auto searchbox rounded-pill" type="text" name="search" placeholder="Filter articles..."/>
                         <p class="article-count text-muted"></p>
                     </form>
                 </div>
@@ -167,6 +167,7 @@
 
  <script src="scripts/auth.js"></script>
  <script src="scripts/app.js"></script>
+ <script src="scripts/list.js"></script>
  <script src="scripts/nav.js"></script>
  <script src="scripts/myfunctions.js"></script>
 
