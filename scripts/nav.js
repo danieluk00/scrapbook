@@ -19,6 +19,10 @@ const changeSection = newSection => {
 //Show 'Add article' form
 const showAddContainer = () => {
 
+    if (!loggedIn) {
+        return;
+    }
+
     animateCSS(addContainer,'fadeIn');
 
     changeVisibility(addContainer, 'show');
@@ -42,6 +46,10 @@ const showAddContainer = () => {
 
 //Show list of articles
 const showListContainer = () => {
+    
+    if (!loggedIn) {
+        return;
+    }
 
     tagFilter="";
 
