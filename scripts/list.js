@@ -16,7 +16,7 @@ const getArticles = () => {
                     articleArray.push(doc); //Populate article array (for use offline)
         });
 
-        articleArray.reverse(); //Reverse array to show most recent articles first
+        sortList(); //Sort according to sort order
         renderList(); //Then render list on page
 
     })
@@ -24,6 +24,18 @@ const getArticles = () => {
         log("Error getting documents: ", error);
     });
 };
+
+//Sort list according to drop down selection
+const sortList = () => {
+    switch(sortOrder) {
+        case 'recent':
+            articleArray.reverse();
+            break;
+        case 'oldest':
+                articleArray.reverse();
+                break;
+    }
+}
 
 //Render list of articles from array
 const renderList = () => {
@@ -34,8 +46,10 @@ const renderList = () => {
     changeVisibility(listOfArticles,'show');
     changeVisibility(tagContainer,'hide');
     changeVisibility(search,'show');
+    changeVisibility(sortByDiv,'hide');
 
-    listOfArticles.innerHTML = `<ul class="list-group"`; //Start of ul list
+    //Start of ul list
+    listOfArticles.innerHTML = `<ul class="list-group">`;
 
     articleArray.forEach(article => {
 
@@ -48,7 +62,10 @@ const renderList = () => {
         let description = article.data().description;
         let tags = article.data().tags;
         let docID = article.id;
-        let domain =  getSite(url);
+        let date = dateFns.distanceInWordsToNow(article.data().created_at.toDate()) + ' ago'
+        let domain = getSite(url);
+
+        // let date = dateFns.distanceInWordsToNow(article.data().created_at)
 
         //Get any search filter term entered
         let searchTerm = search.search.value.trim().toLowerCase();
@@ -74,12 +91,13 @@ const renderList = () => {
             html = `
             <li class="list-group-item d-flex justify-content-between align-items-center">
             <div class="article-main">
-                <span class="article-title"><a href="${url}" ${unreadClass} target='_blank' onclick="readArticle('${docID}')">${title}</a> ${domain}</span>
+                <span class="article-title"><a href="${url}" ${unreadClass} target='_blank' onclick="readArticle('${docID}')">${title}</a> <span class="article-domain">(${domain})</span></span>
+                <span class="article-date">${date}</span>
                 ${tagHTML}
             </div>
             <span class="icons">
-                <i class="far fa-edit edit" title="Edit" onclick="editArticle('${docID}','${title}','${url}','${description}','${tags}',${unread})"></i>
-                <i class="far fa-trash-alt delete" title="Delete" onclick="deleteArticle('${docID}', '${title}',parentElement.parentElement)"></i>
+                <i class="far fa-edit edit action-icon" title="Edit" onclick="editArticle('${docID}','${title}','${url}','${description}','${tags}',${unread})"></i>
+                <i class="far fa-trash-alt delete action-icon" title="Delete" onclick="deleteArticle('${docID}', '${title}',parentElement.parentElement)"></i>
             </span>
             </li>
             `;
@@ -115,9 +133,11 @@ const renderList = () => {
     
     })
 
+    //Show or hide 'Sort by' drop down
+    visibleCount>1 ? changeVisibility(sortByDiv,'show') : changeVisibility(sortByDiv,'hide');
+
     //Update caption with number of articles
     if (section=="unread") {
-
         if (totalCount==0) {
             articleCountText.innerHTML = `No unread articles to show. <a href="#" onclick="showAddContainer()">Click here</a> to add one.`;
         } else {
@@ -252,3 +272,10 @@ const deleteArticle = (docID, title,parentElement) => {
         }, 500);
     }
 }
+
+document.querySelector('.sortby').addEventListener('change', e => {
+    log('change order to '+sortOrder);
+    sortOrder = document.querySelector('.sortby').value
+    sortList();
+    renderList();
+})

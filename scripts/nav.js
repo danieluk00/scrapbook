@@ -27,6 +27,7 @@ const showAddContainer = () => {
 
     changeVisibility(addContainer, 'show');
     changeVisibility(listContainer, 'hide');
+    changeVisibility(sortByDiv,'hide');
 
     document.querySelector('.extra-options').classList.add('d-none');
     changeVisibility(moreOptionsLink,'show');
@@ -58,7 +59,7 @@ const showListContainer = () => {
     }
 
     animateCSS(listContainer,'fadeIn');
-
+    changeVisibility(sortByDiv,'hide');
     changeVisibility(addContainer, 'hide');
     changeVisibility(listContainer, 'show');
     listSection=='tags' ? renderTags() : renderList();

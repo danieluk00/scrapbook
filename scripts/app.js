@@ -15,9 +15,10 @@ const loginBtn = document.querySelector('.login-btn');
 const articleCountText = document.querySelector('.article-Count');
 const listNav = document.querySelector('.list-nav');
 const moreOptionsLink = document.querySelector('.expand-options-icon');
+const sortByDiv = document.querySelector('.sortby-div');
 const maxInList=20;
 
-let section="unread", listSection='unread', articleArray=[], tagArray=[], tagCountArray=[], searchTerm, justAdded, tagFilter, addMode, editDocID;
+let section="unread", listSection='unread', sortOrder="recent", articleArray=[], tagArray=[], tagCountArray=[], searchTerm, justAdded, tagFilter, addMode, editDocID;
 const debug=true;
 
 //ADD NEW ARTICLE
@@ -114,11 +115,11 @@ const getSite = url => {
         url = url.substring(0, url.indexOf('/'));
     }
 
-    if (url.length>15) {
-        url = url.substring(0,15) + "..."
+    if (url.length>25) {
+        url = url.substring(0,22) + "..."
     }
 
-    return "(" + url + ")"
+    return url;
 
 }
 
