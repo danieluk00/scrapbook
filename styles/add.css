@@ -1,0 +1,68 @@
+/* Add article */
+
+.add-container{
+    display: flex;
+    flex-direction: column;
+    padding:10px;
+}
+
+input[type=text],
+input[type=url],
+input[type=url]:focus,
+input[type=text]:focus{
+    border: none;
+    background-color: #D6E2E3;
+}
+
+.card{
+    margin-top:20px;
+    border-radius: 10px;
+}
+
+.card-title{
+    padding-bottom:10px;
+}
+
+.input-padding{
+    margin-bottom:20px;
+}
+
+.expand-options-icon{
+    color:#800000;
+    background:#E8EBEB;
+    opacity:0.7;
+    margin-bottom:25px;
+    height:30px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin-left:-20px;
+    margin-right:-20px;
+    cursor: pointer;
+  }
+
+  .expand-options-icon:hover{
+    transition: opacity .3s ease;
+    opacity:1;
+  }
+
+  .add-form{
+      display:flex;
+      flex-direction: column;
+  }
+
+  .add-article-btn{
+    margin: 0px 60px;
+    background-color:#e67300;
+  }
+
+  .extra-options{
+    margin-bottom:20px;
+  }
+  
+  .cancel-link{
+      text-align: center;
+      margin-top:20px;
+      margin-bottom:-15px;
+      color:black;
+  }
