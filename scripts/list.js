@@ -62,10 +62,9 @@ const renderList = () => {
         let description = article.data().description;
         let tags = article.data().tags;
         let docID = article.id;
-        let date = dateFns.distanceInWordsToNow(article.data().created_at.toDate()) + ' ago'
+        //let date = dateFns.distanceInWordsToNow(article.data().created_at.toDate()) + ' ago'
+        let date = formatDate(article.data().created_at.toDate());
         let domain = getSite(url);
-
-        // let date = dateFns.distanceInWordsToNow(article.data().created_at)
 
         //Get any search filter term entered
         let searchTerm = search.search.value.trim().toLowerCase();
@@ -150,6 +149,9 @@ const renderList = () => {
         articleCountText.innerHTML = `Showing ${visibleCount} of ${totalCount} articles tagged <span class="badge inline-tag badge-pill badge-${tagClass(tagFilter)}">${tagName(tagFilter)}</span>`;     
     }
 }
+
+//Format date string
+const formatDate = date => String(date).substring(4,15);
 
 //Create array of active tags
 const addToTagArray = doc => {
