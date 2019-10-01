@@ -1,0 +1,143 @@
+/* List nav */
+
+.list-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:10px;
+}
+
+.sortby-div{
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom:10px;
+}
+
+.list-nav{
+    display:flex;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.nav-pills{
+    margin-bottom:20px;
+}
+
+.nav-link{
+    color:#cc5200 !important;
+}
+
+.nav-link.active{
+    background-color: #e67300 !important;
+    color:white !important;
+}
+
+/* List of articles */
+
+.unread{
+    font-weight:bold;
+}
+
+.icons{
+    display:flex;
+    flex-direction: row;
+    margin-right:-5px;
+    margin-left:10px;
+}
+
+.action-icon{
+    margin:8px;
+}
+
+@media  (max-width: 500px) {
+    .icons{
+        display:flex;
+        flex-direction: column;
+    }
+}
+
+.article-title{
+    min-width:75%;
+    text-align: left;
+}
+
+.article-date{
+    font-size:0.8em;
+}
+
+.article-main{
+    display:flex;
+    flex-direction: column;
+}
+
+/*Search filter */
+
+.search{
+    display:flex;
+    flex-direction: column;
+    justify-content: right;
+}
+
+.searchbox{
+    background:white !important;
+    max-width:500px;
+    text-align:center;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.select{
+    justify-self: center;
+}
+
+/* Tags */
+
+.tag-container{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.tag-group{
+   display:flex;
+   flex-direction: row;
+   justify-content: center;
+   flex-wrap: wrap;
+   max-width:600px;
+}
+
+.tag{
+    background: #D8D8D5;
+}
+
+.tag-title{
+    display:flex;
+    justify-self: center;
+    justify-content: center;
+}
+
+.tag-btn{
+    margin:5px 10px;
+}
+
+.badge-warning:hover{
+    background-color: #ffe066;
+    color:black;
+}
+
+.inline-tag{
+    margin-top:5px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.inline-tag:hover{
+    background-color:grey;
+    color:white;
+}
+
+.article-count{
+    margin-top:5px;
+    text-align:center;
+}
