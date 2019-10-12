@@ -4,39 +4,54 @@
     min-width:650px;
 }
 
-.list-group{
+.list-group-wrapper{
     min-width:650px;
+}
+.searchbox{
+    width:650px;
 }
 
 @media  (min-width: 600px) and (max-width: 699px) {
-    .list-group{
+    .list-group-wrapper{
         min-width:500px;
     }
     .card-body{
         min-width:500px;
+    }
+    .searchbox{
+        width:500px;
     }
 }
 @media  (min-width: 450px) and (max-width: 599px) {
-    .list-group{
+    .list-group-wrapper{
         min-width:400px;
     }
     .card-body{
         min-width:400px;
+    }
+    .searchbox{
+        width:400px;
     }
 }
 @media  (min-width: 375px) and (max-width: 449px) {
-    .list-group{
+    .list-group-wrapper{
         min-width:350px;
     }
     .card-body{
         min-width:350px;
+    }
+    .searchbox{
+        width:350px;
     }
 }
 @media  (max-width: 374px) {
-    .list-group{
+    .list-group-wrapper{
         min-width:290px;
     }
     .card-body{
         min-width:290px;
+    }
+    .searchbox{
+        width:290px;
     }
 }

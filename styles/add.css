@@ -52,8 +52,16 @@ input[type=text]:focus{
   }
 
   .add-article-btn{
-    margin: 0px 60px;
     background-color:#e67300;
+    color:white;
+    margin: 0px 10px;
+  }
+
+  .add-article-btn:hover{
+    transition: transform .5s ease;
+    transform: scale(1.05);
+    background-color:#e67300;
+    color:white;
   }
 
   .extra-options{
