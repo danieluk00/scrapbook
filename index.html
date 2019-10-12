@@ -58,7 +58,7 @@
                 <header class="text-center text-dark my-4">                    
                     <ul class="nav nav-pills list-nav d-none">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#" id="unread" onclick="changeSection('unread')">Unread</a>
+                            <a class="nav-link active unread-btn" href="#" id="unread" onclick="changeSection('unread')">Unread</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" id="archive" onclick="changeSection('archive')">Archive</a>
@@ -77,7 +77,7 @@
                     </form>
                 </div>
 
-                <div class="sortby-div">
+                <div class="sortby-div d-none">
                     <select name="sortby" class="sortby">
                         <option value="recent">Sort by most recent</option>
                         <option value="oldest">Sort by oldest</option>
@@ -113,7 +113,7 @@
                                 <div class="form-group row">
                                     <label for="title" class="col-sm-2 col-form-label">Title:</label>
                                     <div class="col-sm-10">
-                                        <input class="enter-title form-control font-weight-light" type="text" placeholder="" name="title" autocomplete="off">
+                                        <input class="enter-title form-control font-weight-light" maxlength="80" type="text" placeholder="" name="title" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -138,7 +138,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" name="submit" id="submit" class="btn add-article-btn btn-lg btn-danger" onclick="">Add to scrapbook</button>
+                            <button type="submit" name="submit" id="submit" class="btn add-article-btn btn-lg" onclick="">Add to scrapbook</button>
                             <span>
                                 <a href="#" onclick="cancel()"><p class="cancel-link">Cancel</p></a>
                             </span>
