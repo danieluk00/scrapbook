@@ -32,32 +32,34 @@ const sortList = () => {
             articleArray.reverse();
             break;
         case 'oldest':
-                articleArray.reverse();
-                break;
+            articleArray.reverse();
+            break;
     }
+
 }
 
 //Render list of articles from array
 const renderList = () => {
 
-    let visibleCount=0, totalCount=0;
+    let visibleCount=0, totalCount=0, unreadCount=0;
 
     //Make list elements visible
+    changeVisibility(sortByDiv,'hide');
     changeVisibility(listOfArticles,'show');
     changeVisibility(tagContainer,'hide');
     changeVisibility(search,'show');
-    changeVisibility(sortByDiv,'hide');
 
-    //Start of ul list
-    listOfArticles.innerHTML = `<ul class="list-group">`;
+    listOfArticles.innerHTML = "";
 
     articleArray.forEach(article => {
 
         //Get properties of article from array
         let unread=article.data().unread;
         let unreadClass = unread ? `class="unread"` : ``;
+        unread ? unreadCount++ : "";
 
         let title = article.data().title;
+
         let url = article.data().url;
         let description = article.data().description;
         let tags = article.data().tags;
@@ -89,34 +91,37 @@ const renderList = () => {
         if (visibleCount<maxInList) {
             html = `
             <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div class="article-main">
-                <span class="article-title"><a href="${url}" ${unreadClass} target='_blank' onclick="readArticle('${docID}')">${title}</a> <span class="article-domain">(${domain})</span></span>
-                <span class="article-date">${date}</span>
-                ${tagHTML}
-            </div>
-            <span class="icons">
-                <i class="far fa-edit edit action-icon" title="Edit" onclick="editArticle('${docID}','${title}','${url}','${description}','${tags}',${unread})"></i>
-                <i class="far fa-trash-alt delete action-icon" title="Delete" onclick="deleteArticle('${docID}', '${title}',parentElement.parentElement)"></i>
-            </span>
+                <div class="article-main">
+                    <div class="article-title">
+                        <a href="${url}" ${unreadClass} target='_blank' onclick="readArticle('${docID}')">${title}</a>
+                    </div>
+                    <div class="article-meta">
+                        <div class="article-date">${domain}</div>
+                        <div class="article-date">${date}</div>
+                    </div>
+                    <div class="article-tags">
+                        ${tagHTML}
+                    </div>
+                </div>
+                <div class="icons">
+                    <i class="far fa-edit edit action-icon" title="Edit" onclick="editArticle('${docID}','${title}','${url}','${description}','${tags}',${unread})"></i>
+                    <i class="far fa-trash-alt delete action-icon" title="Delete" onclick="deleteArticle('${docID}', '${title}',parentElement.parentElement)"></i>
+                </div>
             </li>
             `;
         }
     
         //Count total articles in section (without filters)
-        if ((section=='unread' && unread) || (section=='archive' && !unread) || (section=='tags' && tags.toLowerCase().includes(tagFilter)))  {
+        if ((section=='unread' && unread) || section=='archive' || (section=='tags' && tags.toLowerCase().includes(tagFilter)))  {
             totalCount++;
         }
         //Filter out articles from other sections
-        if ((section=='unread' && !unread) || (section=='archive' && unread))  {
+        if ((section=='unread' && !unread) || (section=='tags' && !tags.toLowerCase().includes(tagFilter))) {
             html="";
         }
         //Filter out articles if search filter text entered
         if (searchTerm!="" && (!title.toLowerCase().includes(searchTerm) && !description.toLowerCase().includes(searchTerm) && !tags.toLowerCase().includes(searchTerm))) {
             html="";
-        }
-        //In tags section, filter out articles not in selected tag
-        if (section=='tags' && !tags.toLowerCase().includes(tagFilter)) {
-            html=""
         }
         //Don't show more than 25 articles on the page
         if (visibleCount>=maxInList) {
@@ -126,6 +131,9 @@ const renderList = () => {
         if (html!="") {
             visibleCount++;
         }
+
+        //Update unread count
+        document.querySelector('.unread-btn').innerHTML = unreadCount>0 ? `Unread <span class="badge badge-info tag-number">${unreadCount}</span>` : `Unread`;
 
         //Show article on page
         listOfArticles.innerHTML += html;
@@ -198,7 +206,6 @@ const tagName = tag => tag.charAt(0).toUpperCase() + tag.substring(1,tag.length)
 //Returns number of articles with a particular tag
 const getTaggedNumber = tag => {
     let count=0;
-
     articleArray.forEach(article => {
         if (article.data().tags.toLowerCase().includes(tag.toLowerCase())) {
             count++;
@@ -278,6 +285,9 @@ const deleteArticle = (docID, title,parentElement) => {
 document.querySelector('.sortby').addEventListener('change', e => {
     log('change order to '+sortOrder);
     sortOrder = document.querySelector('.sortby').value
+
+    animateCSS(listOfArticles,'fadeIn')
+
     sortList();
     renderList();
 })

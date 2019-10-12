@@ -155,8 +155,8 @@ const getTitleFromURL = url => {
         i++;
     }
 
-    //Capitalise first letter:
-    title = title.charAt(0).toUpperCase() + title.substring(1,title.length);
+    //Capitalise first letter of words:
+    title = capitaliseFirstLetterOfWords(title);
     title = title.trim()
 
     if (title=="") {
@@ -166,3 +166,14 @@ const getTitleFromURL = url => {
     return title;
 
 }
+
+const capitaliseFirstLetterOfWords = str => {
+    //Split the string into array of words
+    let splitStr = str.toLowerCase().split(' ');
+    for (let i=0; i < splitStr.length; i++) {
+        //Capitlise each word and save back to array
+        splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+    }
+    // Directly return the joined string
+    return splitStr.join(' '); 
+ }
