@@ -45,6 +45,15 @@ body{
     margin-top:10px;
 }
 
+.title-bold {
+    font-weight: 700;
+}
+
+.tagline {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
 /* Make navbar icons smaller on small mobiles */
 @media (max-width: 600px) {
     .navbar-brand{
@@ -67,7 +76,7 @@ body{
     width:400px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 550px) {
     .login-container{
         width:350px;
     }
@@ -81,7 +90,13 @@ body{
         text-decoration: none;
         border-bottom: 1px solid transparent;
     }
+
+    .tabs-underlined .tab-underlined.active {
+        border-bottom: 0px !important;
+        text-align: center !important;
+        }
 }
+
 
 .sign-in-form{
     display:flex;
@@ -108,4 +123,64 @@ border-bottom: 4px solid transparent;
 .tabs-underlined .tab-underlined.active {
 opacity: 1;
 border-bottom: 3px solid #555555;
+}
+
+@media (max-width: 600px) {
+    .tab-underlined.active {
+        text-decoration: none !important;
+    }
+}
+
+.cartoon {
+    height: 200px;
+    width: 200px;
+    display: flex;
+    align-self: center;
+}
+
+.card {
+    padding: 30px;
+    width: 700px;
+    margin-bottom: 30px !important;
+}
+@media (max-width: 750px) {
+    .card {
+        padding: 10px;
+    }
+}
+
+@media (min-width: 625px) and (max-width: 750px) {
+    .card {
+        padding: 30px;
+        width: 600px;
+        margin: 5px;
+    }
+}
+@media (min-width: 525px) and (max-width: 625px) {
+    .card {
+        padding: 30px;
+        width: 500px;
+        margin: 5px;
+    }
+}
+@media (min-width: 425px) and (max-width: 525px) {
+    .card {
+        padding: 30px;
+        width: 400px;
+        margin: 5px;
+    }
+}
+@media (min-width: 375px) and (max-width: 425px) {
+    .card {
+        padding: 15px;c
+        width: 350px;
+        margin: 5px;
+    }
+}
+@media (max-width: 375px) {
+    .card {
+        padding: 15px;
+        width: 300px;
+        margin: 5px;
+    }
 }

@@ -28,10 +28,11 @@
         </nav>
 
         <h1 class="mb-4 font-weight-light text-center title"><i class="far fa-bookmark"></i> Scrapbook</h1>
+        <h5 class="mb-4 font-weight-light text-center title tagline">Scrapbook lets you <span class="title-bold">save, tag</span> and <span class="title-bold">find</span> articles that you don't want to lose.</h5>
 
         <div class="container">
 
-            <div class="login-container d-none">
+            <div class="login-container d-none card">
 
                 <ul class="list-inline tabs-underlined">
                     <li>
@@ -45,6 +46,7 @@
                     </li>
                 </ul>
 
+                <img class="cartoon" src="assets/book.png">
                 <p id="login-instruction">Enter your email address and choose a password to create an account</p>
 
                 <form class="login-form">
@@ -85,6 +87,7 @@
                     <h5 class="my-title mb-2 font-weight-light"></h5>
                     <form class="search" autocomplete="off" onsubmit="return false;">
                         <input class="form-control m-auto searchbox rounded-pill" type="text" name="search" placeholder="Filter articles..."/>
+                        <img class="cartoon" id="empty-box" src="assets/blank.png">
                         <p class="article-count text-muted"></p>
                     </form>
                 </div>

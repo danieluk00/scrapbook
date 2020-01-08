@@ -147,14 +147,23 @@ const renderList = () => {
     if (section=="unread") {
         if (totalCount==0) {
             articleCountText.innerHTML = `No unread articles to show. <a href="#" onclick="showAddContainer()">Click here</a> to add one.`;
+            document.getElementById('empty-box').classList.remove('d-none');
+            document.querySelector('.searchbox').classList.add('d-none');
+
         } else {
             articleCountText.innerHTML = `Showing ${visibleCount} of ${totalCount} <strong>unread</strong> articles`;
+            document.getElementById('empty-box').classList.add('d-none');
+            document.querySelector('.searchbox').classList.remove('d-none');
         }
 
     } else if (section=="archive") {
         articleCountText.innerHTML = `Showing ${visibleCount} of ${totalCount} <strong>archived</strong> articles`;
+        document.getElementById('empty-box').classList.add('d-none');
+        document.querySelector('.searchbox').classList.remove('d-none');
+
     } else if (section=="tags") {
-        articleCountText.innerHTML = `Showing ${visibleCount} of ${totalCount} articles tagged <span class="badge inline-tag badge-pill badge-${tagClass(tagFilter)}">${tagName(tagFilter)}</span>`;     
+        articleCountText.innerHTML = `Showing ${visibleCount} of ${totalCount} articles tagged <span class="badge inline-tag badge-pill badge-${tagClass(tagFilter)}">${tagName(tagFilter)}</span>`;    document.getElementById('empty-box').classList.add('d-none');
+
     }
 }
 
