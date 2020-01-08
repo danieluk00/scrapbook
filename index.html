@@ -41,9 +41,6 @@
                     <li>
                         <a href="#" id="login-login" class="tab-underlined" onclick="changeLoginTab('login-login')">Login</a>
                     </li>
-                    <li>
-                        <a href="#" id="login-reset" class="tab-underlined" onclick="changeLoginTab('login-reset')">Reset password</a>
-                    </li>
                 </ul>
 
                 <img class="cartoon" src="assets/book.png">
@@ -62,7 +59,8 @@
                             <input type="password" class="form-control login-password-input" id="password" placeholder="Password">
                         </div>
                     </div>
-                        <button type="submit" name="login-submit" id="login-submit" class="btn add-btn add-article-btn btn-block login-btn">Create account</button>
+                        <button type="submit" name="login-submit" id="login-submit" class="btn add-btn btn-block login-btn">Create account</button>
+                        <a href="#" id="resetlink" class="d-none" onclick="showResetPassword()">Reset password</a>
                  </form>
                  <p class="login-error"></p>
             </div>

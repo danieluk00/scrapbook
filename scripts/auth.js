@@ -19,6 +19,7 @@ auth.onAuthStateChanged(user => {
     changeVisibility(userNameBtn,'show');
 
     loggedIn=true;
+    document.querySelector('.tagline').classList.add('d-none');
 
     getArticles('unread');
 
@@ -26,6 +27,7 @@ auth.onAuthStateChanged(user => {
 
     log('Not logged in')
     loggedIn = false;
+    document.querySelector('.tagline').classList.remove('d-none');
 
     changeVisibility(loginContainer,'show');
     changeVisibility(listNav,'hide');
@@ -81,9 +83,6 @@ loginForm.addEventListener('submit', e => {
         animateCSS(loginForm,'shake');
         // ...
       });
-  
-  } else if (document.getElementById('login-reset').classList.contains('active')) {
-    resetPassword();
 
   } else if (document.getElementById('login-create').classList.contains('active')) {
     createUser();
@@ -112,6 +111,7 @@ const logout = () => {
   if (confirm('Logged in as '+userName+'\n\nAre you sure you want to log out?')) {
     firebase.auth().signOut().then(function() {
       // Sign-out successful.
+      changeLoginTab('login-login');
     }, function(error) {
       // An error happened.
     });
