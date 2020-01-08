@@ -67,20 +67,45 @@ loginForm.addEventListener('submit', e => {
   
   e.preventDefault();
 
-  let email = loginForm.email.value;
-  let password = loginForm.password.value
+  if (document.getElementById('login-login').classList.contains('active')) {
 
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
+    let email = loginForm.email.value;
+    let password = loginForm.password.value
   
-      setErrorMessage(errorMessage);
-      animateCSS(loginForm,'shake');
-      // ...
-    });
+      firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+    
+        setErrorMessage(errorMessage);
+        animateCSS(loginForm,'shake');
+        // ...
+      });
+  
+  } else if (document.getElementById('login-reset').classList.contains('active')) {
+    resetPassword();
 
+  } else if (document.getElementById('login-create').classList.contains('active')) {
+    createUser();
+
+  }
 })
+
+const createUser = () => {
+
+  var emailAddress = loginForm.email.value;
+  var password = loginForm.password.value;
+
+  firebase.auth().createUserWithEmailAndPassword(emailAddress, password).catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+
+    setErrorMessage(errorMessage)
+    animateCSS(loginForm,'shake');
+    // ...
+  });
+}
 
 
 const logout = () => {
@@ -115,15 +140,9 @@ const resetPassword = () => {
 
   }).catch(function(error) {
 
-    setErrorMessage('Something went wrong. Please enter a valid email address and try again.')
+    setErrorMessage(errorMessage)
     animateCSS(loginForm,'shake');
 
   });
-
-}
-
-const createAccount = () => {
-
-  loginBtn.textContent="Create account";
 
 }

@@ -97,3 +97,25 @@ const editArticle = (docID,title,url,description,tags,unread) => {
 const cancel = () => {
     changeSection(listSection);
 }
+
+const changeLoginTab = tab => {
+    document.getElementById('login-create').classList.remove('active');
+    document.getElementById('login-login').classList.remove('active');
+    document.getElementById('login-reset').classList.remove('active');
+
+    document.getElementById(tab).classList.add('active');
+
+    if (tab=='login-login') {
+        document.getElementById('login-instruction').innerText = "Enter your email address and password to login";
+        document.getElementById('password-group').classList.remove('d-none');
+        document.getElementById('login-submit').innerText = 'Login'
+    } else if (tab=='login-create') {
+        document.getElementById('login-instruction').innerText = "Enter your email address and choose a password to create an account";
+        document.getElementById('password-group').classList.remove('d-none');
+        document.getElementById('login-submit').innerText = 'Create account'
+    } else if (tab=='login-reset') {
+        document.getElementById('login-instruction').innerText = "Enter your email address to reset your password.";
+        document.getElementById('password-group').classList.add('d-none');
+        document.getElementById('login-submit').innerText = 'Reset password'
+    }
+}
