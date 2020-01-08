@@ -103,6 +103,11 @@ const changeLoginTab = tab => {
     document.getElementById('login-login').classList.remove('active');
     document.getElementById('login-reset').classList.remove('active');
 
+    document.getElementById('email').value="";
+    document.getElementById('password').value="";
+
+    animateCSS(document.querySelector('.login-container'),'fadeIn')
+
     document.getElementById(tab).classList.add('active');
 
     if (tab=='login-login') {
@@ -114,7 +119,7 @@ const changeLoginTab = tab => {
         document.getElementById('password-group').classList.remove('d-none');
         document.getElementById('login-submit').innerText = 'Create account'
     } else if (tab=='login-reset') {
-        document.getElementById('login-instruction').innerText = "Enter your email address to reset your password.";
+        document.getElementById('login-instruction').innerText = "Enter your email address to reset your password";
         document.getElementById('password-group').classList.add('d-none');
         document.getElementById('login-submit').innerText = 'Reset password'
     }
