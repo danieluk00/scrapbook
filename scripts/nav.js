@@ -105,27 +105,31 @@ const changeLoginTab = tab => {
     document.getElementById('email').value="";
     document.getElementById('password').value="";
 
-    animateCSS(document.querySelector('.login-container'),'fadeIn')
-
     document.getElementById(tab).classList.add('active');
+    animateCSS(document.querySelector('.login-container'),'fadeIn');
 
     if (tab=='login-login') {
-        document.getElementById('login-instruction').innerText = "Enter your email address and password to login";
+        document.getElementById('login-instruction').innerHTML = "Enter your email address and password to <strong>log in</strong>";
         document.getElementById('password-group').classList.remove('d-none');
         document.getElementById('resetlink').classList.remove('d-none');
         document.getElementById('login-submit').innerText = 'Login';
         document.querySelector('.login-error').innerText="";
+        document.getElementById('login-cartoon').src = "assets/login.png"
+
     } else if (tab=='login-create') {
-        document.getElementById('login-instruction').innerText = "Enter your email address and choose a password to create an account";
+        document.getElementById('login-instruction').innerHTML = "Enter your email address and choose a password to <strong>create an account</strong>";
         document.getElementById('password-group').classList.remove('d-none');
         document.getElementById('resetlink').classList.add('d-none');
         document.getElementById('login-submit').innerText = 'Create account';
         document.querySelector('.login-error').innerText="";
+        document.getElementById('login-cartoon').src = "assets/book.png"
+
     }
 }
 
 const showResetPassword = () => {
-    document.getElementById('login-instruction').innerText = "Enter your email address to reset your password";
+
+    document.getElementById('login-instruction').innerHTML = "Enter your email address to  <strong>reset your password</strong>";
     document.getElementById('password-group').classList.add('d-none');
     document.getElementById('login-submit').innerText = 'Reset password';
     document.getElementById('resetlink').classList.add('d-none');
