@@ -45,6 +45,12 @@ body{
     margin-top:10px;
 }
 
+@media (max-width: 700px) {
+    .title {
+        display: none !important;
+    }
+}
+
 .title-bold {
     font-weight: 700;
 }
@@ -150,6 +156,7 @@ border-bottom: 3px solid #555555;
     padding: 30px;
     width: 700px;
     margin-bottom: 30px !important;
+    margin-top: 30px !important;
 }
 @media (max-width: 750px) {
     .card {

@@ -9,7 +9,6 @@ auth.onAuthStateChanged(user => {
 
   if (user) {
 
-    log('Logged in: '+user);
     UID = user.uid;
     userName = user.email;
     //userNameBtn.textContent = userName;
@@ -24,8 +23,7 @@ auth.onAuthStateChanged(user => {
     getArticles('unread');
 
   } else {
-
-    log('Not logged in')
+    
     loggedIn = false;
     document.querySelector('.tagline').classList.remove('d-none');
 
@@ -69,7 +67,9 @@ loginForm.addEventListener('submit', e => {
   
   e.preventDefault();
 
-  if (document.getElementById('login-login').classList.contains('active')) {
+  if  (document.getElementById('login-instruction').innerText.includes('reset your password')) {
+    resetPassword();
+  } else if (document.getElementById('login-login').classList.contains('active')) {
 
     let email = loginForm.email.value;
     let password = loginForm.password.value
